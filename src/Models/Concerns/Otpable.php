@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-interface HasOtpsContract extends Authenticatable, MustVerifyEmail
+interface Otpable extends Authenticatable, MustVerifyEmail
 {
     /**
      * @return HasMany<Otp>

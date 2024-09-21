@@ -5,7 +5,7 @@ namespace BenBjurstrom\Otpz\Http\Requests;
 use BenBjurstrom\Otpz\Actions\AttemptOtp;
 use BenBjurstrom\Otpz\Exceptions\OtpAttemptsException;
 use Illuminate\Auth\Events\Lockout;
-use BenBjurstrom\Otpz\Models\Concerns\HasOtpsContract as User;
+use BenBjurstrom\Otpz\Models\Concerns\Otpable;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +48,7 @@ class OtpRequest extends FormRequest
      *
      * @throws ValidationException
      */
-    public function authenticate(User $user): void
+    public function authenticate(Otpable $user): void
     {
         $this->ensureIsNotRateLimited();
         RateLimiter::hit($this->throttleKey(), 300);

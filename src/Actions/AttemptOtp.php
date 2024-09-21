@@ -7,19 +7,19 @@ namespace BenBjurstrom\Otpz\Actions;
 use BenBjurstrom\Otpz\Enums\OtpStatus;
 use BenBjurstrom\Otpz\Exceptions\OtpAttemptsException;
 use BenBjurstrom\Otpz\Models\Otp;
-use BenBjurstrom\Otpz\Models\Concerns\HasOtpsContract as User;
+use BenBjurstrom\Otpz\Models\Concerns\Otpable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * @method static User run(User $user, string $code)
+ * @method static Otpable run(Otpable $user, string $code)
  */
 class AttemptOtp
 {
     /**
      * @throws OtpAttemptsException
      */
-    public function handle(User $user, string $code): bool
+    public function handle(Otpable $user, string $code): bool
     {
         $otp = $this->getOtp($user);
 
@@ -34,7 +34,7 @@ class AttemptOtp
         return true;
     }
 
-    protected function getOtp(User $user): ?Otp
+    protected function getOtp(Otpable $user): ?Otp
     {
         return $user->otps()
             ->orderBy('created_at', 'DESC')

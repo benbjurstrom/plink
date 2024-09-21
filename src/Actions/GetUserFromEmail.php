@@ -3,15 +3,15 @@
 namespace BenBjurstrom\Otpz\Actions;
 
 use BenBjurstrom\Otpz\Support\Config;
-use BenBjurstrom\Otpz\Models\Concerns\HasOtpsContract as User;
+use BenBjurstrom\Otpz\Models\Concerns\Otpable;
 use Illuminate\Support\Str;
 
 /**
- * @method static User run(string $email)
+ * @method static Otpable run(string $email)
  */
 class GetUserFromEmail
 {
-    public function handle(string $email): User
+    public function handle(string $email): Otpable
     {
         $authenticatableModel = Config::getAuthenticatableModel();
         $user = $authenticatableModel::where('email', $email)->first();

@@ -3,14 +3,14 @@
 namespace BenBjurstrom\Otpz\Actions;
 
 use BenBjurstrom\Otpz\Notifications\OtpNotification;
-use BenBjurstrom\Otpz\Models\Concerns\HasOtpsContract as User;
+use BenBjurstrom\Otpz\Models\Concerns\Otpable;
 
 /**
- * @method static User run(string $email)
+ * @method static Otpable run(string $email)
  */
 class SendOtp
 {
-    public function handle(string $email): User
+    public function handle(string $email): Otpable
     {
         $user = (new GetUserFromEmail)->handle($email);
 

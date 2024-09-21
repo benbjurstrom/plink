@@ -4,18 +4,18 @@ namespace BenBjurstrom\Otpz\Actions;
 
 use BenBjurstrom\Otpz\Enums\OtpStatus;
 use BenBjurstrom\Otpz\Exceptions\OtpThrottleException;
-use BenBjurstrom\Otpz\Models\Concerns\HasOtpsContract as User;
+use BenBjurstrom\Otpz\Models\Concerns\Otpable;
 use Illuminate\Support\Str;
 
 /**
- * @method static User run(User $user)
+ * @method static Otpable run(Otpable $user)
  */
 class CreateOtp
 {
     /**
      * @throws OtpThrottleException
      */
-    public function handle(User $user): string
+    public function handle(Otpable $user): string
     {
         $this->throttle($user);
 
@@ -25,7 +25,7 @@ class CreateOtp
     /**
      * @throws OtpThrottleException
      */
-    public function throttle(User $user)
+    public function throttle(Otpable $user)
     {
         foreach ($this->getThresholds() as $threshold) {
             $count = $this->getOtpCount($user, $threshold['minutes']);
@@ -46,7 +46,7 @@ class CreateOtp
         ];
     }
 
-    private function getOtpCount(User $user, int $minutes): int
+    private function getOtpCount(Otpable $user, int $minutes): int
     {
         return $user->otps()
             ->where('status', '!=', OtpStatus::USED)
@@ -54,7 +54,7 @@ class CreateOtp
             ->count();
     }
 
-    private function calculateRemainingTime(User $user, int $minutes): array
+    private function calculateRemainingTime(Otpable $user, int $minutes): array
     {
         $earliestOtp = $user->otps()
             ->where('created_at', '>=', now()->subMinutes($minutes))
@@ -74,7 +74,7 @@ class CreateOtp
         return ['minutes' => 0, 'seconds' => 0];
     }
 
-    private function createOtp(User $user): string
+    private function createOtp(Otpable $user): string
     {
         // Generate a secure 6-digit OTP code
         $code = Str::upper(Str::random(9));
