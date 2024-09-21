@@ -2,10 +2,10 @@
 
 namespace BenBjurstrom\Otpz\Tests\Support\Factories;
 
+use BenBjurstrom\Otpz\Tests\Support\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use BenBjurstrom\Otpz\Tests\Support\Models\User;
 
 class UserFactory extends Factory
 {
