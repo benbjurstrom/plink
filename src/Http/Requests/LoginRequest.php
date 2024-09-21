@@ -3,8 +3,8 @@
 namespace BenBjurstrom\Otpz\Http\Requests;
 
 use BenBjurstrom\Otpz\Actions\SendOtp;
-use Illuminate\Auth\Events\Lockout;
 use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\RateLimiter;

@@ -2,8 +2,8 @@
 
 namespace BenBjurstrom\Otpz\Actions;
 
-use BenBjurstrom\Otpz\Notifications\OtpNotification;
 use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use BenBjurstrom\Otpz\Notifications\OtpNotification;
 
 /**
  * @method static Otpable run(string $email)

@@ -6,8 +6,8 @@ namespace BenBjurstrom\Otpz\Actions;
 
 use BenBjurstrom\Otpz\Enums\OtpStatus;
 use BenBjurstrom\Otpz\Exceptions\OtpAttemptsException;
-use BenBjurstrom\Otpz\Models\Otp;
 use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use BenBjurstrom\Otpz\Models\Otp;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 

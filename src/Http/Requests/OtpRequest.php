@@ -4,8 +4,8 @@ namespace BenBjurstrom\Otpz\Http\Requests;
 
 use BenBjurstrom\Otpz\Actions\AttemptOtp;
 use BenBjurstrom\Otpz\Exceptions\OtpAttemptsException;
-use Illuminate\Auth\Events\Lockout;
 use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;

@@ -19,14 +19,13 @@ class Config
             throw InvalidAuthenticatableModel::missingInterface($authenticatableModel, Otpable::class);
         }
 
-        if (!is_subclass_of($authenticatableModel, Model::class, true)) {
+        if (! is_subclass_of($authenticatableModel, Model::class, true)) {
             throw InvalidAuthenticatableModel::notExtendingModel($authenticatableModel);
         }
 
-        if(!is_string($authenticatableModel)) {
+        if (! is_string($authenticatableModel)) {
             throw new \Exception('Authenticatable model must be a string');
         }
-
 
         return $authenticatableModel;
     }

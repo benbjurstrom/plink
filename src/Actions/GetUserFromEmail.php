@@ -2,8 +2,8 @@
 
 namespace BenBjurstrom\Otpz\Actions;
 
-use BenBjurstrom\Otpz\Support\Config;
 use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use BenBjurstrom\Otpz\Support\Config;
 use Illuminate\Support\Str;
 
 /**
