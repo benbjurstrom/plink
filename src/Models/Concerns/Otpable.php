@@ -14,5 +14,9 @@ interface Otpable extends Authenticatable, MustVerifyEmail
      */
     public function otps(): HasMany;
 
-    public function notify(mixed $instance): void;
+    /**
+     * @param mixed $instance
+     * @return void
+     */
+    public function notify(mixed $instance);
 }
