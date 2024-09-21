@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace BenBjurstrom\Otpz;
 
+use BenBjurstrom\Otpz\Commands\OtpzCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class OtpzServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +16,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('otpz')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_migration_table_name_table')
-            ->hasCommand(SkeletonCommand::class);
+            ->hasViews('otpz')
+            ->hasMigration('create_otps_table')
+            ->hasCommand(OtpzCommand::class);
     }
 }
