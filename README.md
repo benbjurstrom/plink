@@ -1,11 +1,11 @@
-# OTPz (OT-Peasy): Secure First Factor One-Time Passwords For Laravel
+# OTPz (OT-Peasy): First Factor One-Time Passwords For Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/benbjurstrom/otpz.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/otpz)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/otpz/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/benbjurstrom/otpz/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/otpz/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/benbjurstrom/otpz/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/benbjurstrom/otpz.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/otpz)
 
-This package replaces the Laravel Breeze password configuration with secure first factor one-time passwords (OTP).
+This package replaces the Laravel Breeze password configuration with first factor one-time passwords (OTP).
 
 
 
@@ -28,19 +28,16 @@ This package replaces the Laravel Breeze password configuration with secure firs
 
 ## FAQ
 Why not use signed magic links?
-- Magic links require the user to have access to their email account on the device they wish to login with. This is a significant usability tradeoff. Secure OTPs can be read on the user's phone and entered into the application on a shared device.
+- Magic links require the user to have access to their email account on the device they wish to login with. This is a significant usability tradeoff. OTPs can be read on the user's phone and entered into the application on a shared device.
 
 Isn't email insecure?
-- Yes, email is not a secure medium. But remember first factor OTPs are intended to replace passwords. And most password based system offer a "forgot password" feature that sends a password reset link to the user's email bypassing the password entirely.
+- It's true that a compromised email account could be used to gain access to user accounts via this package. But remember first factor OTPs are intended to replace passwords. And most password based system offer a "forgot password" feature that sends a password reset link to the user's email.
 
 What if a user loses access to their email?
-- That's a legitimate concern. In a traditional password system, the user could continue using their password even though they've lost access to their email. For first factor OTPs, it's recommended to have either a backup email tied to their account or use passkeys.
+- That's a legitimate concern. In a traditional password system, the user could continue using their password even though they've lost access to their email. For first factor OTPs, it's recommended to have either a backup email tied to their account or add something like passekys as an alternative auth method.
 
 Why not just use passkeys?
-- Passkeys offer the best security but require the user to have access to their password manager on the device they wish to login with. This is a significant usability tradeoff. Secure OTPs can be read on the user's phone and entered into the application on a shared device.
-
-
-
+- Passkeys offer the best security but require the user to have access to their password manager on the device they wish to login with. Though cross device authentication using passkey's is possible via scanning QR codes, the process is unreliable; at least in this developer's experience.
 
 ## Installation
 

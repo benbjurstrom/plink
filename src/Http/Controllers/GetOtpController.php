@@ -27,6 +27,7 @@ class GetOtpController
         return view('otpz::otp', [
             'email' => $user->email,
             'url' => $url,
+            'code' => $request->code,
         ]);
     }
 }

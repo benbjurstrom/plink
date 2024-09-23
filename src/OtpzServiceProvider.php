@@ -7,7 +7,6 @@ use BenBjurstrom\Otpz\Http\Controllers\GetLoginController;
 use BenBjurstrom\Otpz\Http\Controllers\GetOtpController;
 use BenBjurstrom\Otpz\Http\Controllers\PostLoginController;
 use BenBjurstrom\Otpz\Http\Controllers\PostOtpController;
-use BenBjurstrom\Otpz\Http\Controllers\PostOtpLinkController;
 use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -43,9 +42,6 @@ class OtpzServiceProvider extends PackageServiceProvider
 
             Route::post('login/{id}', PostOtpController::class)
                 ->name('otp.post');
-
-            Route::get('otplink', PostOtpLinkController::class)
-                ->name('otplink');
         });
 
         return $this;

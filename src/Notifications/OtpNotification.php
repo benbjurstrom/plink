@@ -34,20 +34,24 @@ class OtpNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $url = URL::temporarySignedRoute('otplink', now()->addMinutes(5), [
+        $url = URL::temporarySignedRoute('otp.show', now()->addMinutes(5), [
             'code' => $this->code,
-            'email' => $notifiable->email,
+            'id' => $notifiable->id,
         ]);
 
-        $code = substr_replace($this->code, '-', 3, 0);
-        $code = substr_replace($code, '-', 7, 0);
+        // Format the code with hyphens for readability
+        $formattedCode = substr_replace($this->code, '-', 3, 0);
+        $formattedCode = substr_replace($formattedCode, '-', 7, 0);
 
         return (new MailMessage)
-            ->subject('Your '.config('app.name').' login code')
-            ->greeting('Use the following code to login to your account:')
-            ->line($code)
-            ->action('Open In Browser', $url)
-            ->line('Note: this code expires after 5 minutes.');
+            ->subject('Your '.config('app.name').' Login Link')
+            ->line('Click the button below to securely log in to your account:')
+            ->action('Sign-In to '.config('app.name'), $url)
+            ->line('If you cannot access this link from the device you\'re authorizing, you may manually enter the code below:')
+            ->line($formattedCode)
+            ->line('**Important:** Only enter this code after verifying that the URL in your browser is on the correct domain:'.config('app.url'))
+            ->line('This code expires after 5 minutes and can only be used once.')
+            ->salutation('Thank you for using '.config('app.name').'!');
     }
 
     /**

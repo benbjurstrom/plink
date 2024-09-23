@@ -32,6 +32,8 @@
 
                     <div class="flex justify-center">
                         <input
+                            {{ $code ? 'readonly' : '' }}
+                            {{ $code ? 'value="'. $code .'"' : '' }}
                             x-data="{}"
                             id="code"
                             type="text"
