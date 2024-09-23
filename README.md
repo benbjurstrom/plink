@@ -1,19 +1,46 @@
-# OTPz (OT-Peasy): Secure One-Time Passwords For Laravel
+# OTPz (OT-Peasy): Secure First Factor One-Time Passwords For Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/benbjurstrom/otpz.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/otpz)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/otpz/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/benbjurstrom/otpz/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/otpz/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/benbjurstrom/otpz/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/benbjurstrom/otpz.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/otpz)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+This package replaces the Laravel Breeze password configuration with secure first factor one-time passwords (OTP).
 
-## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/otpz.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/otpz)
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+## Features
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+### Security
+| ✅ System Details          | ✅ Expiration     | ✅ Issuance Limits |
+|---------------------------|-------------------|---------------------|
+| 36^9 possible combinations | After 5 minutes   | 1 every minute      |
+| Bcrypt hashed             | After 3 attempts  | 3 every 5 minutes   |
+| Auditable logs            | After 1 login     | 5 every 30 minutes  |
+
+### Useablity
+
+| ✅ Better than Passwords   | ✅ Easy to Use          |
+|---------------------------|---------------------------|
+| No memorization required  | Hyphenated for readablity |
+| Eliminates password reuse | Case-insensitive          |
+| No password reset flow    | Clickable login link      |
+
+## FAQ
+Why not use signed magic links?
+- Magic links require the user to have access to their email account on the device they wish to login with. This is a significant usability tradeoff. Secure OTPs can be read on the user's phone and entered into the application on a shared device.
+
+Isn't email insecure?
+- Yes, email is not a secure medium. But remember first factor OTPs are intended to replace passwords. And most password based system offer a "forgot password" feature that sends a password reset link to the user's email bypassing the password entirely.
+
+What if a user loses access to their email?
+- That's a legitimate concern. In a traditional password system, the user could continue using their password even though they've lost access to their email. For first factor OTPs, it's recommended to have either a backup email tied to their account or use passkeys.
+
+Why not just use passkeys?
+- Passkeys offer the best security but require the user to have access to their password manager on the device they wish to login with. This is a significant usability tradeoff. Secure OTPs can be read on the user's phone and entered into the application on a shared device.
+
+
+
 
 ## Installation
 
