@@ -1,5 +1,5 @@
 <?php
 
-use BenBjurstrom\Otpz\Tests\TestCase;
+use BenBjurstrom\Plink\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

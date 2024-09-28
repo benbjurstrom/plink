@@ -1,9 +1,9 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Http\Requests;
+namespace BenBjurstrom\Plink\Http\Requests;
 
-use BenBjurstrom\Otpz\Actions\SendOtp;
-use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Actions\SendOtp;
+use BenBjurstrom\Plink\Models\Concerns\Otpable;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

@@ -1,12 +1,12 @@
 {
-    "name": "benbjurstrom/otpz",
+    "name": "benbjurstrom/plink",
     "description": "Secure One-Time Passwords For Laravel",
     "keywords": [
         "Ben Bjurstrom",
         "laravel",
-        "otpz"
+        "plink"
     ],
-    "homepage": "https://github.com/benbjurstrom/otpz",
+    "homepage": "https://github.com/benbjurstrom/plink",
     "license": "MIT",
     "authors": [
         {
@@ -34,19 +34,19 @@
     },
     "autoload": {
         "psr-4": {
-            "BenBjurstrom\\Otpz\\": "src/",
-            "BenBjurstrom\\Otpz\\Database\\Factories\\": "database/factories/"
+            "BenBjurstrom\\Plink\\": "src/",
+            "BenBjurstrom\\Plink\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "BenBjurstrom\\Otpz\\Tests\\": "tests/",
+            "BenBjurstrom\\Plink\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-otpz --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-plink --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -72,10 +72,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "BenBjurstrom\\Otpz\\OtpzServiceProvider"
+                "BenBjurstrom\\Plink\\PlinkServiceProvider"
             ],
             "aliases": {
-                "Otpz": "BenBjurstrom\\Otpz\\Facades\\Otpz"
+                "Plink": "BenBjurstrom\\Plink\\Facades\\Plink"
             }
         }
     },

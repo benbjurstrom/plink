@@ -1,10 +1,10 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Http\Requests;
+namespace BenBjurstrom\Plink\Http\Requests;
 
-use BenBjurstrom\Otpz\Actions\AttemptOtp;
-use BenBjurstrom\Otpz\Exceptions\OtpAttemptsException;
-use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Actions\AttemptOtp;
+use BenBjurstrom\Plink\Exceptions\OtpAttemptsException;
+use BenBjurstrom\Plink\Models\Concerns\Otpable;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

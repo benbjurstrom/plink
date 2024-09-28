@@ -1,9 +1,9 @@
 # OTPz (OT-Peasy): First Factor One-Time Passwords For Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/benbjurstrom/otpz.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/otpz)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/otpz/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/benbjurstrom/otpz/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/otpz/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/benbjurstrom/otpz/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/benbjurstrom/otpz.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/otpz)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/benbjurstrom/plink.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/plink)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/plink/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/benbjurstrom/plink/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/plink/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/benbjurstrom/plink/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/benbjurstrom/plink.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/plink)
 
 This package replaces the Laravel Breeze password configuration with first factor one-time passwords (OTP).
 
@@ -44,20 +44,20 @@ Why not just use passkeys?
 You can install the package via composer:
 
 ```bash
-composer require benbjurstrom/otpz
+composer require benbjurstrom/plink
 ```
 
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="otpz-migrations"
+php artisan vendor:publish --tag="plink-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="otpz-config"
+php artisan vendor:publish --tag="plink-config"
 ```
 
 This is the contents of the published config file:
@@ -91,8 +91,8 @@ Update your User model to implement the Otpable interface with HasOtps trait
 namespace App\Models;
 
 ...
-use BenBjurstrom\Otpz\Models\Concerns\HasOtps;
-use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Models\Concerns\HasOtps;
+use BenBjurstrom\Plink\Models\Concerns\Otpable;
 
 class User extends Authenticatable implements Otpable
 {
@@ -119,7 +119,7 @@ Finally add the Alpine.js Mask plugin to your guest.blade.php file
 If you want to customize the views used by this package, you can publish them with:
 
 ```bash
-php artisan vendor:publish --tag="otpz-views"
+php artisan vendor:publish --tag="plink-views"
 ```
 
 ## Testing

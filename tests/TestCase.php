@@ -1,9 +1,9 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Tests;
+namespace BenBjurstrom\Plink\Tests;
 
-use BenBjurstrom\Otpz\OtpzServiceProvider;
-use BenBjurstrom\Otpz\Tests\Support\Models\User;
+use BenBjurstrom\Plink\PlinkServiceProvider;
+use BenBjurstrom\Plink\Tests\Support\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -21,7 +21,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            OtpzServiceProvider::class,
+            PlinkServiceProvider::class,
         ];
     }
 
@@ -29,7 +29,7 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
         config()->set('auth.providers.users.model', User::class);
-        config()->set('otpz.models.authenticatable', User::class);
+        config()->set('plink.models.authenticatable', User::class);
 
         $migration = include __DIR__.'/../vendor/orchestra/testbench-core/laravel/migrations/0001_01_01_000000_testbench_create_users_table.php';
         $migration->up();

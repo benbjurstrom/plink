@@ -1,8 +1,8 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Tests\Support\Factories;
+namespace BenBjurstrom\Plink\Tests\Support\Factories;
 
-use BenBjurstrom\Otpz\Tests\Support\Models\User;
+use BenBjurstrom\Plink\Tests\Support\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

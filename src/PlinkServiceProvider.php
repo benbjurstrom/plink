@@ -1,17 +1,17 @@
 <?php
 
-namespace BenBjurstrom\Otpz;
+namespace BenBjurstrom\Plink;
 
-use BenBjurstrom\Otpz\Commands\OtpzCommand;
-use BenBjurstrom\Otpz\Http\Controllers\GetLoginController;
-use BenBjurstrom\Otpz\Http\Controllers\GetOtpController;
-use BenBjurstrom\Otpz\Http\Controllers\PostLoginController;
-use BenBjurstrom\Otpz\Http\Controllers\PostOtpController;
+use BenBjurstrom\Plink\Commands\PlinkCommand;
+use BenBjurstrom\Plink\Http\Controllers\GetLoginController;
+use BenBjurstrom\Plink\Http\Controllers\GetOtpController;
+use BenBjurstrom\Plink\Http\Controllers\PostLoginController;
+use BenBjurstrom\Plink\Http\Controllers\PostOtpController;
 use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class OtpzServiceProvider extends PackageServiceProvider
+class PlinkServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -21,16 +21,16 @@ class OtpzServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('otpz')
+            ->name('plink')
             ->hasConfigFile()
-            ->hasViews('otpz')
+            ->hasViews('plink')
             ->hasMigration('create_otps_table')
-            ->hasCommand(OtpzCommand::class);
+            ->hasCommand(PlinkCommand::class);
 
-        $this->registerOtpzRouteMacro();
+        $this->registerPlinkRouteMacro();
     }
 
-    protected function registerOtpzRouteMacro(): self
+    protected function registerPlinkRouteMacro(): self
     {
         Route::macro('otpRoutes', function () {
             Route::get('login', GetLoginController::class)->name('login');

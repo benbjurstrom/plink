@@ -1,8 +1,8 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Http\Controllers;
+namespace BenBjurstrom\Plink\Http\Controllers;
 
-use BenBjurstrom\Otpz\Http\Requests\LoginRequest;
+use BenBjurstrom\Plink\Http\Requests\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\URL;
 

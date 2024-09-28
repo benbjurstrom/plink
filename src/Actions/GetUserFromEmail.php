@@ -1,9 +1,9 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Actions;
+namespace BenBjurstrom\Plink\Actions;
 
-use BenBjurstrom\Otpz\Models\Concerns\Otpable;
-use BenBjurstrom\Otpz\Support\Config;
+use BenBjurstrom\Plink\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Support\Config;
 use Illuminate\Support\Str;
 
 /**

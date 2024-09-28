@@ -1,6 +1,6 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Http\Controllers;
+namespace BenBjurstrom\Plink\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -9,6 +9,6 @@ class GetLoginController
 {
     public function __invoke(Request $request): View
     {
-        return view('otpz::login');
+        return view('plink::login');
     }
 }

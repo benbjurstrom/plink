@@ -1,6 +1,6 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Database\Factories;
+namespace BenBjurstrom\Plink\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

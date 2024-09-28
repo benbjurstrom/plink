@@ -1,9 +1,9 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Models;
+namespace BenBjurstrom\Plink\Models;
 
-use BenBjurstrom\Otpz\Enums\OtpStatus;
-use BenBjurstrom\Otpz\Support\Config;
+use BenBjurstrom\Plink\Enums\OtpStatus;
+use BenBjurstrom\Plink\Support\Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 

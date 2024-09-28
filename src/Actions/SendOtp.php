@@ -1,9 +1,9 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Actions;
+namespace BenBjurstrom\Plink\Actions;
 
-use BenBjurstrom\Otpz\Models\Concerns\Otpable;
-use BenBjurstrom\Otpz\Notifications\OtpNotification;
+use BenBjurstrom\Plink\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Notifications\OtpNotification;
 
 /**
  * @method static Otpable run(string $email)

@@ -1,9 +1,9 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Http\Controllers;
+namespace BenBjurstrom\Plink\Http\Controllers;
 
-use BenBjurstrom\Otpz\Enums\OtpStatus;
-use BenBjurstrom\Otpz\Support\Config;
+use BenBjurstrom\Plink\Enums\OtpStatus;
+use BenBjurstrom\Plink\Support\Config;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -24,7 +24,7 @@ class GetOtpController
             'otp.post', now()->addMinutes(5), ['id' => $user->id]
         );
 
-        return view('otpz::otp', [
+        return view('plink::otp', [
             'email' => $user->email,
             'url' => $url,
             'code' => $request->code,

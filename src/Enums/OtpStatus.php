@@ -1,6 +1,6 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Enums;
+namespace BenBjurstrom\Plink\Enums;
 
 enum OtpStatus: int
 {

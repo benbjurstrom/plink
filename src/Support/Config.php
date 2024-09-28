@@ -1,9 +1,9 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Support;
+namespace BenBjurstrom\Plink\Support;
 
-use BenBjurstrom\Otpz\Exceptions\InvalidAuthenticatableModel;
-use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Exceptions\InvalidAuthenticatableModel;
+use BenBjurstrom\Plink\Models\Concerns\Otpable;
 use Illuminate\Database\Eloquent\Model;
 
 class Config
@@ -13,7 +13,7 @@ class Config
      */
     public static function getAuthenticatableModel(): string
     {
-        $authenticatableModel = config('otpz.models.authenticatable');
+        $authenticatableModel = config('plink.models.authenticatable');
 
         if (! is_a($authenticatableModel, Otpable::class, true)) {
             throw InvalidAuthenticatableModel::missingInterface($authenticatableModel, Otpable::class);

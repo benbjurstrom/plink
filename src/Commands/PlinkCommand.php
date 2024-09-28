@@ -1,12 +1,12 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Commands;
+namespace BenBjurstrom\Plink\Commands;
 
 use Illuminate\Console\Command;
 
-class OtpzCommand extends Command
+class PlinkCommand extends Command
 {
-    public $signature = 'otpz';
+    public $signature = 'plink';
 
     public $description = 'My command';
 

@@ -1,7 +1,7 @@
 <?php
 
-use BenBjurstrom\Otpz\Actions\GetUserFromEmail;
-use BenBjurstrom\Otpz\Tests\Support\Models\User;
+use BenBjurstrom\Plink\Actions\GetUserFromEmail;
+use BenBjurstrom\Plink\Tests\Support\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 

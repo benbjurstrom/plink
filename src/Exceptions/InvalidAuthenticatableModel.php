@@ -1,6 +1,6 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Exceptions;
+namespace BenBjurstrom\Plink\Exceptions;
 
 use Exception;
 

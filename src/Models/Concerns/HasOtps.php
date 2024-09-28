@@ -1,8 +1,8 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Models\Concerns;
+namespace BenBjurstrom\Plink\Models\Concerns;
 
-use BenBjurstrom\Otpz\Models\Otp;
+use BenBjurstrom\Plink\Models\Otp;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasOtps

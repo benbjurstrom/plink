@@ -1,10 +1,10 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Http\Controllers;
+namespace BenBjurstrom\Plink\Http\Controllers;
 
-use BenBjurstrom\Otpz\Enums\OtpStatus;
-use BenBjurstrom\Otpz\Http\Requests\OtpRequest;
-use BenBjurstrom\Otpz\Support\Config;
+use BenBjurstrom\Plink\Enums\OtpStatus;
+use BenBjurstrom\Plink\Http\Requests\OtpRequest;
+use BenBjurstrom\Plink\Support\Config;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 

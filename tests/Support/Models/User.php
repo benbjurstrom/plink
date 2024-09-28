@@ -1,10 +1,10 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Tests\Support\Models;
+namespace BenBjurstrom\Plink\Tests\Support\Models;
 
-use BenBjurstrom\Otpz\Models\Concerns\HasOtps;
-use BenBjurstrom\Otpz\Models\Concerns\Otpable;
-use BenBjurstrom\Otpz\Tests\Support\Factories\UserFactory;
+use BenBjurstrom\Plink\Models\Concerns\HasOtps;
+use BenBjurstrom\Plink\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Tests\Support\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;

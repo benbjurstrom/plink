@@ -1,6 +1,6 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Notifications;
+namespace BenBjurstrom\Plink\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;

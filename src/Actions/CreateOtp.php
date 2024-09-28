@@ -1,10 +1,10 @@
 <?php
 
-namespace BenBjurstrom\Otpz\Actions;
+namespace BenBjurstrom\Plink\Actions;
 
-use BenBjurstrom\Otpz\Enums\OtpStatus;
-use BenBjurstrom\Otpz\Exceptions\OtpThrottleException;
-use BenBjurstrom\Otpz\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Enums\OtpStatus;
+use BenBjurstrom\Plink\Exceptions\OtpThrottleException;
+use BenBjurstrom\Plink\Models\Concerns\Otpable;
 use Illuminate\Support\Str;
 
 /**
