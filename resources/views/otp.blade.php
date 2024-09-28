@@ -18,11 +18,11 @@
             <form class="space-y-6" method="POST" action="{{ $url }}">
                 @csrf
                 <div>
-                    <h2 id="otp-heading" class="mb-2 text-2xl font-bold">
+                    <h2 id="plink-heading" class="mb-2 text-2xl font-bold">
                         One-Time Password
                     </h2>
                     <p
-                        id="otp-description"
+                        id="plink-description"
                         class="mb-8 text-sm text-zinc-600 dark:text-zinc-400"
                     >
                         Enter the 9-digit alpha numeric code sent to your email. The
@@ -43,8 +43,8 @@
                             class="mt-1 block w-72 rounded-xl border-gray-300 p-4 text-center text-2xl uppercase shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             x-mask="***-***-***"
                             placeholder="XXX-XXX-XXX"
-                            aria-labelledby="otp-heading"
-                            aria-describedby="otp-description {{ $errors->has('form.code') ? 'otp-error' : '' }}"
+                            aria-labelledby="plink-heading"
+                            aria-describedby="plink-description {{ $errors->has('form.code') ? 'plink-error' : '' }}"
                             aria-invalid="{{ $errors->has('form.code') ? 'true' : 'false' }}"
                             maxlength="11"
                         />
@@ -53,7 +53,7 @@
                     <x-input-error
                         :messages="$errors->get('code')"
                         class="mt-2"
-                        id="otp-error"
+                        id="plink-error"
                     />
                 </div>
 

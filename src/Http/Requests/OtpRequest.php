@@ -2,9 +2,9 @@
 
 namespace BenBjurstrom\Plink\Http\Requests;
 
-use BenBjurstrom\Plink\Actions\AttemptOtp;
-use BenBjurstrom\Plink\Exceptions\OtpAttemptsException;
-use BenBjurstrom\Plink\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Actions\AttemptPlink;
+use BenBjurstrom\Plink\Exceptions\PlinkAttemptsException;
+use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -48,15 +48,15 @@ class OtpRequest extends FormRequest
      *
      * @throws ValidationException
      */
-    public function authenticate(Otpable $user): void
+    public function authenticate(Plinkable $user): void
     {
         $this->ensureIsNotRateLimited();
         RateLimiter::hit($this->throttleKey(), 300);
 
         $code = $this->code;
         try {
-            (new AttemptOtp)->handle($user, $code);
-        } catch (OtpAttemptsException $e) {
+            (new AttemptPlink)->handle($user, $code);
+        } catch (PlinkAttemptsException $e) {
             throw ValidationException::withMessages([
                 'code' => $e->getMessage(),
             ]);

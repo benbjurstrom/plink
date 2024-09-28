@@ -4,7 +4,7 @@ namespace BenBjurstrom\Plink\Exceptions;
 
 use Exception;
 
-class OtpAttemptsException extends Exception
+class PlinkAttemptsException extends Exception
 {
     public function __construct(string $message)
     {

@@ -4,7 +4,7 @@ namespace BenBjurstrom\Plink\Exceptions;
 
 use Exception;
 
-class OtpExistsException extends Exception
+class PlinkExpiredException extends Exception
 {
     //
 }

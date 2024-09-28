@@ -13,7 +13,7 @@ class PostLoginController
         $user = $request->sendEmail();
 
         $url = URL::temporarySignedRoute(
-            'otp.show', now()->addMinutes(5), ['id' => $user->getAuthIdentifier()]
+            'plink.show', now()->addMinutes(5), ['id' => $user->getAuthIdentifier()]
         );
 
         return redirect($url);

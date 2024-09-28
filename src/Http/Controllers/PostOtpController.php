@@ -2,7 +2,7 @@
 
 namespace BenBjurstrom\Plink\Http\Controllers;
 
-use BenBjurstrom\Plink\Enums\OtpStatus;
+use BenBjurstrom\Plink\Enums\PlinkStatus;
 use BenBjurstrom\Plink\Http\Requests\OtpRequest;
 use BenBjurstrom\Plink\Support\Config;
 use Illuminate\Http\RedirectResponse;
@@ -13,7 +13,7 @@ class PostOtpController
     public function __invoke(OtpRequest $request, int $id): RedirectResponse
     {
         if (! $request->hasValidSignature()) {
-            return redirect()->route('login')->withErrors(['email' => OtpStatus::EXPIRED->errorMessage()])->withInput();
+            return redirect()->route('login')->withErrors(['email' => PlinkStatus::EXPIRED->errorMessage()])->withInput();
         }
 
         $model = Config::getAuthenticatableModel();

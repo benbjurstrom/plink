@@ -2,8 +2,8 @@
 
 namespace BenBjurstrom\Plink\Http\Requests;
 
-use BenBjurstrom\Plink\Actions\SendOtp;
-use BenBjurstrom\Plink\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Actions\SendPlink;
+use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -38,13 +38,13 @@ class LoginRequest extends FormRequest
      *
      * @throws ValidationException
      */
-    public function sendEmail(): Otpable
+    public function sendEmail(): Plinkable
     {
         $this->ensureIsNotRateLimited();
         RateLimiter::hit($this->throttleKey(), 300);
 
         try {
-            $user = (new SendOtp)->handle($this->email);
+            $user = (new SendPlink)->handle($this->email);
         } catch (\Exception $e) {
             throw ValidationException::withMessages([
                 'email' => $e->getMessage(),

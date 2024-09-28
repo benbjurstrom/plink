@@ -2,20 +2,18 @@
 
 namespace BenBjurstrom\Plink\Models;
 
-use BenBjurstrom\Plink\Enums\OtpStatus;
+use BenBjurstrom\Plink\Enums\PlinkStatus;
 use BenBjurstrom\Plink\Support\Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * @property OtpStatus $status
- * @property string $code
+ * @property PlinkStatus $status
  * @property bool $remember
- * @property int $attempts
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * */
-class Otp extends Model
+class Plink extends Model
 {
     /**
      * The attributes that should be cast to native types.
@@ -23,7 +21,7 @@ class Otp extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'status' => OtpStatus::class,
+        'status' => PlinkStatus::class,
         'code' => 'hashed',
     ];
 

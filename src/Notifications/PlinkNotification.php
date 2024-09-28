@@ -7,7 +7,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 
-class OtpNotification extends Notification
+class PlinkNotification extends Notification
 {
     use Queueable;
 
@@ -34,7 +34,7 @@ class OtpNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $url = URL::temporarySignedRoute('otp.show', now()->addMinutes(5), [
+        $url = URL::temporarySignedRoute('plink.show', now()->addMinutes(5), [
             'code' => $this->code,
             'id' => $notifiable->id,
         ]);

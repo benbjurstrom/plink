@@ -2,7 +2,7 @@
 
 namespace BenBjurstrom\Plink\Http\Controllers;
 
-use BenBjurstrom\Plink\Enums\OtpStatus;
+use BenBjurstrom\Plink\Enums\PlinkStatus;
 use BenBjurstrom\Plink\Support\Config;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,17 +14,17 @@ class GetOtpController
     public function __invoke(Request $request, int $id): View|RedirectResponse
     {
         if (! $request->hasValidSignature()) {
-            return redirect()->route('login')->withErrors(['email' => OtpStatus::EXPIRED->errorMessage()])->withInput();
+            return redirect()->route('login')->withErrors(['email' => PlinkStatus::EXPIRED->errorMessage()])->withInput();
         }
 
         $model = Config::getAuthenticatableModel();
         $user = $model::findOrFail($id);
 
         $url = URL::temporarySignedRoute(
-            'otp.post', now()->addMinutes(5), ['id' => $user->id]
+            'plink.post', now()->addMinutes(5), ['id' => $user->id]
         );
 
-        return view('plink::otp', [
+        return view('plink::plink', [
             'email' => $user->email,
             'url' => $url,
             'code' => $request->code,

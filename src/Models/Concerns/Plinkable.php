@@ -2,17 +2,17 @@
 
 namespace BenBjurstrom\Plink\Models\Concerns;
 
-use BenBjurstrom\Plink\Models\Otp;
+use BenBjurstrom\Plink\Models\Plink;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-interface Otpable extends Authenticatable, MustVerifyEmail
+interface Plinkable extends Authenticatable, MustVerifyEmail
 {
     /**
-     * @return HasMany<Otp>
+     * @return HasMany<Plink>
      */
-    public function otps(): HasMany;
+    public function plinks(): HasMany;
 
     /**
      * @return void

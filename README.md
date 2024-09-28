@@ -91,12 +91,12 @@ Update your User model to implement the Otpable interface with HasOtps trait
 namespace App\Models;
 
 ...
-use BenBjurstrom\Plink\Models\Concerns\HasOtps;
-use BenBjurstrom\Plink\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Models\Concerns\HasPlinks;
+use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 
-class User extends Authenticatable implements Otpable
+class User extends Authenticatable implements Plinkable
 {
-    use HasFactory, Notifiable, HasOtps;
+    use HasFactory, Notifiable, HasPlinks;
     
     // ...
 }
@@ -105,7 +105,7 @@ class User extends Authenticatable implements Otpable
 Add the Otp routes to your `routes/web.php` file
 
 ```php
-Route::otpRoutes();
+Route::plinkRoutes();
 
 ```
 

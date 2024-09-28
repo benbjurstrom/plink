@@ -2,16 +2,16 @@
 
 namespace BenBjurstrom\Plink\Actions;
 
-use BenBjurstrom\Plink\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 use BenBjurstrom\Plink\Support\Config;
 use Illuminate\Support\Str;
 
 /**
- * @method static Otpable run(string $email)
+ * @method static Plinkable run(string $email)
  */
 class GetUserFromEmail
 {
-    public function handle(string $email): Otpable
+    public function handle(string $email): Plinkable
     {
         $authenticatableModel = Config::getAuthenticatableModel();
         $user = $authenticatableModel::where('email', $email)->first();

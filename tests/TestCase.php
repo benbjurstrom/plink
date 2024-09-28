@@ -34,7 +34,7 @@ class TestCase extends Orchestra
         $migration = include __DIR__.'/../vendor/orchestra/testbench-core/laravel/migrations/0001_01_01_000000_testbench_create_users_table.php';
         $migration->up();
 
-        $migration = include __DIR__.'/../database/migrations/create_otps_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_plinks_table.php.stub';
         $migration->up();
     }
 }

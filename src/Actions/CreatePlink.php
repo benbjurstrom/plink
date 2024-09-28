@@ -2,20 +2,20 @@
 
 namespace BenBjurstrom\Plink\Actions;
 
-use BenBjurstrom\Plink\Enums\OtpStatus;
-use BenBjurstrom\Plink\Exceptions\OtpThrottleException;
-use BenBjurstrom\Plink\Models\Concerns\Otpable;
+use BenBjurstrom\Plink\Enums\PlinkStatus;
+use BenBjurstrom\Plink\Exceptions\PlinkThrottleException;
+use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 use Illuminate\Support\Str;
 
 /**
- * @method static Otpable run(Otpable $user)
+ * @method static Plinkable run(Plinkable $user)
  */
-class CreateOtp
+class CreatePlink
 {
     /**
-     * @throws OtpThrottleException
+     * @throws PlinkThrottleException
      */
-    public function handle(Otpable $user): string
+    public function handle(Plinkable $user): string
     {
         $this->throttle($user);
 
@@ -23,16 +23,16 @@ class CreateOtp
     }
 
     /**
-     * @throws OtpThrottleException
+     * @throws PlinkThrottleException
      */
-    public function throttle(Otpable $user)
+    public function throttle(Plinkable $user)
     {
         foreach ($this->getThresholds() as $threshold) {
             $count = $this->getOtpCount($user, $threshold['minutes']);
 
             if ($count > $threshold['limit']) {
                 $remaining = $this->calculateRemainingTime($user, $threshold['minutes']);
-                throw new OtpThrottleException($remaining['minutes'], $remaining['seconds']);
+                throw new PlinkThrottleException($remaining['minutes'], $remaining['seconds']);
             }
         }
     }
@@ -46,17 +46,17 @@ class CreateOtp
         ];
     }
 
-    private function getOtpCount(Otpable $user, int $minutes): int
+    private function getOtpCount(Plinkable $user, int $minutes): int
     {
-        return $user->otps()
-            ->where('status', '!=', OtpStatus::USED)
+        return $user->plinks()
+            ->where('status', '!=', PlinkStatus::USED)
             ->where('created_at', '>=', now()->subMinutes($minutes))
             ->count();
     }
 
-    private function calculateRemainingTime(Otpable $user, int $minutes): array
+    private function calculateRemainingTime(Plinkable $user, int $minutes): array
     {
-        $earliestOtp = $user->otps()
+        $earliestOtp = $user->plinks()
             ->where('created_at', '>=', now()->subMinutes($minutes))
             ->orderBy('created_at', 'asc')
             ->first();
@@ -74,20 +74,20 @@ class CreateOtp
         return ['minutes' => 0, 'seconds' => 0];
     }
 
-    private function createOtp(Otpable $user): string
+    private function createOtp(Plinkable $user): string
     {
         // Generate a secure 6-digit OTP code
         $code = Str::upper(Str::random(9));
 
         // Invalidate existing active OTPs
-        $user->otps()
-            ->where('status', OtpStatus::ACTIVE)
-            ->update(['status' => OtpStatus::SUPERSEDED]);
+        $user->plinks()
+            ->where('status', PlinkStatus::ACTIVE)
+            ->update(['status' => PlinkStatus::SUPERSEDED]);
 
         // Create and save the new OTP
-        $user->otps()->create([
+        $user->plinks()->create([
             'code' => $code,
-            'status' => OtpStatus::ACTIVE,
+            'status' => PlinkStatus::ACTIVE,
             'ip_address' => request()->ip(),
         ]);
 

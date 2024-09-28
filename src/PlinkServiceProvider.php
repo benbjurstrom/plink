@@ -24,7 +24,7 @@ class PlinkServiceProvider extends PackageServiceProvider
             ->name('plink')
             ->hasConfigFile()
             ->hasViews('plink')
-            ->hasMigration('create_otps_table')
+            ->hasMigration('create_plinks_table')
             ->hasCommand(PlinkCommand::class);
 
         $this->registerPlinkRouteMacro();
@@ -32,16 +32,16 @@ class PlinkServiceProvider extends PackageServiceProvider
 
     protected function registerPlinkRouteMacro(): self
     {
-        Route::macro('otpRoutes', function () {
+        Route::macro('plinkRoutes', function () {
             Route::get('login', GetLoginController::class)->name('login');
 
             Route::post('login', PostLoginController::class)->name('login.post');
 
             Route::get('login/{id}', GetOtpController::class)
-                ->name('otp.show');
+                ->name('plink.show');
 
             Route::post('login/{id}', PostOtpController::class)
-                ->name('otp.post');
+                ->name('plink.post');
         });
 
         return $this;
