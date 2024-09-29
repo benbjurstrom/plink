@@ -1,60 +1,71 @@
-# OTPz (OT-Peasy): First Factor One-Time Passwords For Laravel
+<div align="center">
+    <img src="https://github.com/benbjurstrom/plink/blob/1-proof-of-concept/art/logo.png?raw=true" width="600" alt="PREZET">
+</div>
+
+# Plink: Passwordless Log-In Links for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/benbjurstrom/plink.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/plink)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/plink/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/benbjurstrom/plink/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/plink/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/benbjurstrom/plink/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/benbjurstrom/plink.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/plink)
 
-This package replaces the Laravel Breeze password configuration with first factor one-time passwords (OTP).
+This package provides full-featured passwordless log-in links for Laravel applications.
 
-
-
-## Features
-
-### Security
-| ✅ System Details          | ✅ Expiration     | ✅ Issuance Limits |
-|---------------------------|-------------------|---------------------|
-| 36^9 possible combinations | After 5 minutes   | 1 every minute      |
-| Bcrypt hashed             | After 3 attempts  | 3 every 5 minutes   |
-| Auditable logs            | After 1 login     | 5 every 30 minutes  |
-
-### Useablity
-
-| ✅ Better than Passwords   | ✅ Easy to Use          |
-|---------------------------|---------------------------|
-| No memorization required  | Hyphenated for readablity |
-| Eliminates password reuse | Case-insensitive          |
-| No password reset flow    | Clickable login link      |
-
-## FAQ
-Why not use signed magic links?
-- Magic links require the user to have access to their email account on the device they wish to login with. This is a significant usability tradeoff. OTPs can be read on the user's phone and entered into the application on a shared device.
-
-Isn't email insecure?
-- It's true that a compromised email account could be used to gain access to user accounts via this package. But remember first factor OTPs are intended to replace passwords. And most password based system offer a "forgot password" feature that sends a password reset link to the user's email.
-
-What if a user loses access to their email?
-- That's a legitimate concern. In a traditional password system, the user could continue using their password even though they've lost access to their email. For first factor OTPs, it's recommended to have either a backup email tied to their account or add something like passekys as an alternative auth method.
-
-Why not just use passkeys?
-- Passkeys offer the best security but require the user to have access to their password manager on the device they wish to login with. Though cross device authentication using passkey's is possible via scanning QR codes, the process is unreliable; at least in this developer's experience.
+- ✅ Rate limited
+- ✅ Invalidated after first use
+- ✅ Locked to the user's session
+- ✅ Configurable expiration time
+- ✅ Detailed error messages
+- ✅ Customizable mail template
+- ✅ Auditable logs
 
 ## Installation
 
-You can install the package via composer:
+### 1. Install the package via composer
 
 ```bash
 composer require benbjurstrom/plink
 ```
 
-You can publish and run the migrations with:
+### 2. Add the package's interface and trait to your Authenticatable model
+
+```php
+// app/Models/User.php
+namespace App\Models;
+
+//...
+use BenBjurstrom\Plink\Models\Concerns\HasPlinks;
+use BenBjurstrom\Plink\Models\Concerns\Plinkable;
+
+class User extends Authenticatable implements Plinkable
+{
+    use HasFactory, Notifiable, HasPlinks;
+    
+    // ...
+}
+```
+
+### 3. Publish and run the migrations
 
 ```bash
 php artisan vendor:publish --tag="plink-migrations"
 php artisan migrate
 ```
 
-You can publish the config file with:
+### 4. Add the package provided routes
+
+```php
+// routes/web.php
+Route::plinkRoutes();
+```
+
+### 5. (Optional) Publish the views for custom styling
+
+```bash
+php artisan vendor:publish --tag="plink-views"
+```
+
+### 6. (Optional) Publish the config file
 
 ```bash
 php artisan vendor:publish --tag="plink-config"
@@ -71,55 +82,16 @@ return [
     | Model Configuration
     |--------------------------------------------------------------------------
     |
-    | This setting determines the model used by Otpz to store and retrieve
+    | This setting determines the model used by Plink to store and retrieve
     | one-time passwords. By default, it uses the 'App\Models\User' model.
     |
     */
-    
+
     'models' => [
         'authenticatable' => env('AUTH_MODEL', App\Models\User::class),
     ],
 ];
 
-```
-
-Update your User model to implement the Otpable interface with HasOtps trait
-
-```php
-<?php
-
-namespace App\Models;
-
-...
-use BenBjurstrom\Plink\Models\Concerns\HasPlinks;
-use BenBjurstrom\Plink\Models\Concerns\Plinkable;
-
-class User extends Authenticatable implements Plinkable
-{
-    use HasFactory, Notifiable, HasPlinks;
-    
-    // ...
-}
-```
-
-Add the Otp routes to your `routes/web.php` file
-
-```php
-Route::plinkRoutes();
-
-```
-
-Finally add the Alpine.js Mask plugin to your guest.blade.php file
-
-```html
-<!-- Alpine Plugins -->
-<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
-```
-
-If you want to customize the views used by this package, you can publish them with:
-
-```bash
-php artisan vendor:publish --tag="plink-views"
 ```
 
 ## Testing
