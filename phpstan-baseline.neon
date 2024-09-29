@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Class App\\\\Models\\\\User not found\\.$#"
+			count: 1
+			path: config/plink.php
+
+		-
+			message: "#^Method BenBjurstrom\\\\Plink\\\\Models\\\\Plink\\:\\:user\\(\\) should return Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsTo\\<BenBjurstrom\\\\Plink\\\\Models\\\\Concerns\\\\Plinkable, BenBjurstrom\\\\Plink\\\\Models\\\\Plink\\> but returns Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsTo\\<TRelatedModel of Illuminate\\\\Database\\\\Eloquent\\\\Model, \\$this\\(BenBjurstrom\\\\Plink\\\\Models\\\\Plink\\)\\>\\.$#"
+			count: 1
+			path: src/Models/Plink.php
+
+		-
+			message: "#^Type BenBjurstrom\\\\Plink\\\\Models\\\\Concerns\\\\Plinkable in generic type Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsTo\\<BenBjurstrom\\\\Plink\\\\Models\\\\Concerns\\\\Plinkable, BenBjurstrom\\\\Plink\\\\Models\\\\Plink\\> in PHPDoc tag @return is not subtype of template type TRelatedModel of Illuminate\\\\Database\\\\Eloquent\\\\Model of class Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsTo\\.$#"
+			count: 1
+			path: src/Models/Plink.php

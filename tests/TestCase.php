@@ -1,10 +1,11 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace BenBjurstrom\Plink\Tests;
 
+use BenBjurstrom\Plink\PlinkServiceProvider;
+use BenBjurstrom\Plink\Tests\Support\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use VendorName\Skeleton\SkeletonServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,24 +14,27 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'VendorName\\Skeleton\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'BenBjurstrom\\Plink\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            SkeletonServiceProvider::class,
+            PlinkServiceProvider::class,
         ];
     }
 
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
+        config()->set('auth.providers.users.model', User::class);
+        config()->set('plink.models.authenticatable', User::class);
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
+        $migration = include __DIR__.'/../vendor/orchestra/testbench-core/laravel/migrations/0001_01_01_000000_testbench_create_users_table.php';
         $migration->up();
-        */
+
+        $migration = include __DIR__.'/../database/migrations/create_plinks_table.php.stub';
+        $migration->up();
     }
 }

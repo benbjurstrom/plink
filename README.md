@@ -1,69 +1,133 @@
-# :package_description
+<div align="center">
+    <img src="https://github.com/benbjurstrom/plink/blob/1-proof-of-concept/art/logo.png?raw=true" width="600" alt="PREZET">
+</div>
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+# Passwordless Log-In Links for Laravel
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/benbjurstrom/plink.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/plink)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/plink/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/benbjurstrom/plink/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/plink/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/benbjurstrom/plink/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/benbjurstrom/plink.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/plink)
 
-## Support us
+This package provides full-featured passwordless log-in links for Laravel applications.
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+- ✅ Rate limited
+- ✅ Invalidated after first use
+- ✅ Locked to the user's session
+- ✅ Configurable expiration
+- ✅ Detailed error messages
+- ✅ Customizable mail template
+- ✅ Auditable logs
 
 ## Installation
 
-You can install the package via composer:
+### 1. Install the package via composer
 
 ```bash
-composer require :vendor_slug/:package_slug
+composer require benbjurstrom/plink
 ```
 
-You can publish and run the migrations with:
+### 2. Add the package's interface and trait to your Authenticatable model
+
+```php
+// app/Models/User.php
+namespace App\Models;
+
+//...
+use BenBjurstrom\Plink\Models\Concerns\HasPlinks;
+use BenBjurstrom\Plink\Models\Concerns\Plinkable;
+
+class User extends Authenticatable implements Plinkable
+{
+    use HasFactory, Notifiable, HasPlinks;
+    
+    // ...
+}
+```
+
+### 3. Publish and run the migrations
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
+php artisan vendor:publish --tag="plink-migrations"
 php artisan migrate
 ```
 
-You can publish the config file with:
+### 4. Add the package provided routes
+
+```php
+// routes/web.php
+Route::plinkRoutes();
+```
+
+### 5. (Optional) Publish the views for custom styling
 
 ```bash
-php artisan vendor:publish --tag=":package_slug-config"
+php artisan vendor:publish --tag="plink-views"
+```
+
+This package publishes the following views:
+```bash
+resources/
+└── views/
+    └── vendor/
+        └── plink/
+            ├── error.blade.php
+            └── mail/
+                └── plink.blade.php
+```
+
+### 6. (Optional) Publish the config file
+
+```bash
+php artisan vendor:publish --tag="plink-config"
 ```
 
 This is the contents of the published config file:
 
 ```php
+<?php
+
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Model Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This setting determines the model used by Plink to store and retrieve
+    | one-time passwords. By default, it uses the 'App\Models\User' model.
+    |
+    */
+
+    'models' => [
+        'authenticatable' => env('AUTH_MODEL', App\Models\User::class),
+    ],
 ];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
 ```
 
 ## Usage
 
+1. Replace the Laravel Breeze [LoginForm authenticate method](https://github.com/laravel/breeze/blob/2.x/stubs/livewire-common/app/Livewire/Forms/LoginForm.php#L29C6-L29C41) with a sendEmail method that runs the SendPlink action. For example:
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
-```
+    public function sendEmail(): void
+    {
+        $this->validate();
+
+        $this->ensureIsNotRateLimited();
+        RateLimiter::hit($this->throttleKey(), 300);
+
+        try {
+            (new SendPlink)->handle($this->email);
+        } catch (PlinkThrottleException $e) {
+            throw ValidationException::withMessages([
+                'form.email' => $e->getMessage(),
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
+    }
+````
+
+Everything else is handled by the package components.
 
 ## Testing
 
@@ -85,7 +149,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Ben Bjurstrom](https://github.com/benbjurstrom)
 - [All Contributors](../../contributors)
 
 ## License
