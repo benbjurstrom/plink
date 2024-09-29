@@ -14,7 +14,7 @@ This package provides full-featured passwordless log-in links for Laravel applic
 - ✅ Rate limited
 - ✅ Invalidated after first use
 - ✅ Locked to the user's session
-- ✅ Configurable expiration time
+- ✅ Configurable expiration
 - ✅ Detailed error messages
 - ✅ Customizable mail template
 - ✅ Auditable logs
@@ -65,6 +65,17 @@ Route::plinkRoutes();
 php artisan vendor:publish --tag="plink-views"
 ```
 
+This package publishes the following views:
+```bash
+resources/
+└── views/
+    └── vendor/
+        └── plink/
+            ├── error.blade.php
+            └── mail/
+                └── plink.blade.php
+```
+
 ### 6. (Optional) Publish the config file
 
 ```bash
@@ -91,8 +102,32 @@ return [
         'authenticatable' => env('AUTH_MODEL', App\Models\User::class),
     ],
 ];
-
 ```
+
+## Usage
+
+1. Replace the Laravel Breeze [LoginForm authenticate method](https://github.com/laravel/breeze/blob/2.x/stubs/livewire-common/app/Livewire/Forms/LoginForm.php#L29C6-L29C41) with a sendEmail method that runs the SendPlink action. For example:
+```php
+    public function sendEmail(): void
+    {
+        $this->validate();
+
+        $this->ensureIsNotRateLimited();
+        RateLimiter::hit($this->throttleKey(), 300);
+
+        try {
+            (new SendPlink)->handle($this->email);
+        } catch (PlinkThrottleException $e) {
+            throw ValidationException::withMessages([
+                'form.email' => $e->getMessage(),
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
+    }
+````
+
+Everything else is handled by the package components.
 
 ## Testing
 

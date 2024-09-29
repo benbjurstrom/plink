@@ -2,11 +2,13 @@
 
 namespace BenBjurstrom\Plink\Actions;
 
+use BenBjurstrom\Plink\Exceptions\PlinkThrottleException;
 use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 use BenBjurstrom\Plink\Notifications\PlinkNotification;
 
 /**
  * @method static Plinkable run(string $email)
+ * @throws PlinkThrottleException
  */
 class SendPlink
 {
