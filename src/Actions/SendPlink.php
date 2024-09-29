@@ -8,6 +8,7 @@ use BenBjurstrom\Plink\Notifications\PlinkNotification;
 
 /**
  * @method static Plinkable run(string $email)
+ *
  * @throws PlinkThrottleException
  */
 class SendPlink
