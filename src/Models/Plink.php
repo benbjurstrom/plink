@@ -3,13 +3,16 @@
 namespace BenBjurstrom\Plink\Models;
 
 use BenBjurstrom\Plink\Enums\PlinkStatus;
+use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 use BenBjurstrom\Plink\Support\Config;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
  * @property PlinkStatus $status
  * @property bool $remember
+ * @property int $user_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * */
@@ -36,7 +39,10 @@ class Plink extends Model
         'ip_address',
     ];
 
-    public function user()
+    /**
+     * @return BelongsTo<Plinkable, Plink>
+     */
+    public function user(): BelongsTo
     {
         $authenticatableModel = Config::getAuthenticatableModel();
 

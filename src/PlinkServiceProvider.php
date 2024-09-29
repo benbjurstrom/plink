@@ -3,10 +3,7 @@
 namespace BenBjurstrom\Plink;
 
 use BenBjurstrom\Plink\Commands\PlinkCommand;
-use BenBjurstrom\Plink\Http\Controllers\GetLoginController;
-use BenBjurstrom\Plink\Http\Controllers\GetOtpController;
-use BenBjurstrom\Plink\Http\Controllers\PostLoginController;
-use BenBjurstrom\Plink\Http\Controllers\PostOtpController;
+use BenBjurstrom\Plink\Http\Controllers\GetPlinkController;
 use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -33,15 +30,16 @@ class PlinkServiceProvider extends PackageServiceProvider
     protected function registerPlinkRouteMacro(): self
     {
         Route::macro('plinkRoutes', function () {
-            Route::get('login', GetLoginController::class)->name('login');
+            Route::get('plink/{id}', GetPlinkController::class)
+                ->name('plink.show')
+                ->middleware('guest');
 
-            Route::post('login', PostLoginController::class)->name('login.post');
+            Route::get('/mailable', function () {
+                $plink = \BenBjurstrom\Plink\Models\Plink::find(8);
 
-            Route::get('login/{id}', GetOtpController::class)
-                ->name('plink.show');
+                return new \BenBjurstrom\Plink\Mail\PlinkMail($plink);
+            });
 
-            Route::post('login/{id}', PostOtpController::class)
-                ->name('plink.post');
         });
 
         return $this;

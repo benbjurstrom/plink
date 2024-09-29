@@ -6,7 +6,7 @@ return [
     | Model Configuration
     |--------------------------------------------------------------------------
     |
-    | This setting determines the model used by Otpz to store and retrieve
+    | This setting determines the model used by Plink to store and retrieve
     | one-time passwords. By default, it uses the 'App\Models\User' model.
     |
     */

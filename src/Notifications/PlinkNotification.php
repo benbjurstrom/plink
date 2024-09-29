@@ -2,6 +2,7 @@
 
 namespace BenBjurstrom\Plink\Notifications;
 
+use BenBjurstrom\Plink\Models\Plink;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -14,7 +15,7 @@ class PlinkNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(public string $code)
+    public function __construct(public Plink $plink)
     {
         //
     }
@@ -35,22 +36,15 @@ class PlinkNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $url = URL::temporarySignedRoute('plink.show', now()->addMinutes(5), [
-            'code' => $this->code,
-            'id' => $notifiable->id,
+            'id' => $this->plink->id,
+            'session' => request()->session()->getId(),
         ]);
-
-        // Format the code with hyphens for readability
-        $formattedCode = substr_replace($this->code, '-', 3, 0);
-        $formattedCode = substr_replace($formattedCode, '-', 7, 0);
 
         return (new MailMessage)
             ->subject('Your '.config('app.name').' Login Link')
             ->line('Click the button below to securely log in to your account:')
             ->action('Sign-In to '.config('app.name'), $url)
-            ->line('If you cannot access this link from the device you\'re authorizing, you may manually enter the code below:')
-            ->line($formattedCode)
-            ->line('**Important:** Only enter this code after verifying that the URL in your browser is on the correct domain:'.config('app.url'))
-            ->line('This code expires after 5 minutes and can only be used once.')
+            ->line('This link expires after 5 minutes and can only be used once.')
             ->salutation('Thank you for using '.config('app.name').'!');
     }
 

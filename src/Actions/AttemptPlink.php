@@ -5,82 +5,71 @@ declare(strict_types=1);
 namespace BenBjurstrom\Plink\Actions;
 
 use BenBjurstrom\Plink\Enums\PlinkStatus;
-use BenBjurstrom\Plink\Exceptions\PlinkAttemptsException;
-use BenBjurstrom\Plink\Models\Concerns\Plinkable;
+use BenBjurstrom\Plink\Exceptions\PlinkAttemptException;
 use BenBjurstrom\Plink\Models\Plink;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
 
-/**
- * @method static Plinkable run(Plinkable $user, string $code)
- */
 class AttemptPlink
 {
     /**
-     * @throws PlinkAttemptsException
+     * @throws PlinkAttemptException
      */
-    public function handle(Plinkable $user, string $code): bool
+    public function handle(int $id): Plink
     {
-        $plink = $this->getOtp($user);
-
+        $this->validateSignature();
+        $plink = Plink::findOrFail($id);
         $this->validateStatus($plink);
         $this->validateNotExpired($plink);
-        $this->validateAttempts($plink);
-        $this->validateCode($plink, $code);
+        $this->validateSession();
 
         // if everything above passes mark the plink as used
         $plink->update(['status' => PlinkStatus::USED]);
 
-        return true;
-    }
-
-    protected function getOtp(Plinkable $user): ?Plink
-    {
-        return $user->plinks()
-            ->orderBy('created_at', 'DESC')
-            ->first();
+        return $plink;
     }
 
     /**
-     * @throws PlinkAttemptsException
+     * @throws PlinkAttemptException
      */
     protected function validateStatus(Plink $plink): void
     {
         if ($plink->status !== PlinkStatus::ACTIVE) {
-            throw new PlinkAttemptsException($plink->status->errorMessage());
+            throw new PlinkAttemptException($plink->status->errorMessage());
         }
     }
 
     /**
-     * @throws PlinkAttemptsException
+     * @throws PlinkAttemptException
      */
     protected function validateNotExpired(Plink $plink): void
     {
         if ($plink->created_at->lt(Carbon::now()->subMinutes(5))) {
             $plink->update(['status' => PlinkStatus::EXPIRED]);
-            throw new PlinkAttemptsException($plink->status->errorMessage());
+            throw new PlinkAttemptException($plink->status->errorMessage());
         }
     }
 
     /**
-     * @throws PlinkAttemptsException
+     * @throws PlinkAttemptException
      */
-    protected function validateAttempts(Plink $plink): void
+    protected function ValidateSignature(): void
     {
-        if ($plink->attempts >= 3) {
-            $plink->update(['status' => PlinkStatus::ATTEMPTED]);
-            throw new PlinkAttemptsException($plink->status->errorMessage());
+        if (! request()->hasValidSignature()) {
+            if (! url()->signatureHasNotExpired(request())) {
+                throw new PlinkAttemptException(PlinkStatus::EXPIRED->errorMessage());
+            }
+
+            throw new PlinkAttemptException(PlinkStatus::INVALID->errorMessage());
         }
     }
 
     /**
-     * @throws PlinkAttemptsException
+     * @throws PlinkAttemptException
      */
-    protected function validateCode(Plink $plink, string $code): void
+    protected function ValidateSession(): void
     {
-        if (! Hash::check($code, $plink->code)) {
-            $plink->increment('attempts');
-            throw new PlinkAttemptsException(PlinkStatus::INVALID->errorMessage());
+        if (request()->get('session') !== session()->getId()) {
+            throw new PlinkAttemptException(PlinkStatus::SESSION->errorMessage());
         }
     }
 }
