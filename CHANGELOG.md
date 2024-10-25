@@ -2,6 +2,14 @@
 
 All notable changes to `plink` will be documented in this file.
 
+## v0.3.0 - 2024-10-25
+
+### What's Changed
+
+* Update PlinkServiceProvider.php by @benbjurstrom in https://github.com/benbjurstrom/plink/pull/4
+
+**Full Changelog**: https://github.com/benbjurstrom/plink/compare/v0.2.0...v0.3.0
+
 ## v0.2.0 - 2024-10-25
 
 ### What's Changed
