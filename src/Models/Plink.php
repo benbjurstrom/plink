@@ -5,6 +5,7 @@ namespace BenBjurstrom\Plink\Models;
 use BenBjurstrom\Plink\Enums\PlinkStatus;
 use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 use BenBjurstrom\Plink\Support\Config;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -18,6 +19,8 @@ use Illuminate\Support\Carbon;
  * */
 class Plink extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that should be cast to native types.
      *

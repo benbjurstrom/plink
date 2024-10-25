@@ -3,8 +3,9 @@
 namespace BenBjurstrom\Plink\Actions;
 
 use BenBjurstrom\Plink\Exceptions\PlinkThrottleException;
+use BenBjurstrom\Plink\Mail\PlinkMail;
 use BenBjurstrom\Plink\Models\Concerns\Plinkable;
-use BenBjurstrom\Plink\Notifications\PlinkNotification;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * @method static Plinkable run(string $email)
@@ -15,10 +16,11 @@ class SendPlink
 {
     public function handle(string $email): Plinkable
     {
+        $mailable = config('plink.mailable', PlinkMail::class);
         $user = (new GetUserFromEmail)->handle($email);
-
         $plink = (new CreatePlink)->handle($user);
-        $user->notify(new PlinkNotification($plink));
+
+        Mail::to($user)->send(new $mailable($plink));
 
         return $user;
     }
