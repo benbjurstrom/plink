@@ -2,6 +2,14 @@
 
 All notable changes to `plink` will be documented in this file.
 
+## v0.2.0 - 2024-10-25
+
+### What's Changed
+
+* 2 switch to mailable by @benbjurstrom in https://github.com/benbjurstrom/plink/pull/3
+
+**Full Changelog**: https://github.com/benbjurstrom/plink/compare/v0.1.0...v0.2.0
+
 ## v0.1.0 - 2024-10-04
 
 ### What's Changed
