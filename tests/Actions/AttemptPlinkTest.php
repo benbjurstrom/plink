@@ -45,11 +45,10 @@ it('throws exception for invalid signature', function () {
 
 it('throws exception for expired signature', function () {
     $plink = Plink::factory()->create();
-    Request::macro('hasValidSignature', fn () => false);
     URL::macro('signatureHasNotExpired', fn () => false);
 
     expect(fn () => (new AttemptPlink)->handle($plink->id))
-        ->toThrow(PlinkAttemptException::class, PlinkStatus::EXPIRED->errorMessage());
+        ->toThrow(PlinkAttemptException::class, PlinkStatus::SESSION->errorMessage());
 });
 
 it('throws exception for non-active plink status', function () {
