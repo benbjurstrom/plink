@@ -30,7 +30,7 @@ class CreatePlink
         foreach ($this->getThresholds() as $threshold) {
             $count = $this->getPlinkCount($user, $threshold['minutes']);
 
-            if ($count > $threshold['limit']) {
+            if ($count >= $threshold['limit']) {
                 $remaining = $this->calculateRemainingTime($user, $threshold['minutes']);
                 throw new PlinkThrottleException($remaining['minutes'], $remaining['seconds']);
             }

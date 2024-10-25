@@ -2,7 +2,6 @@
 
 namespace BenBjurstrom\Plink;
 
-use BenBjurstrom\Plink\Commands\PlinkCommand;
 use BenBjurstrom\Plink\Http\Controllers\GetPlinkController;
 use BenBjurstrom\Plink\Mail\PlinkMail;
 use BenBjurstrom\Plink\Models\Plink as PlinkModel;

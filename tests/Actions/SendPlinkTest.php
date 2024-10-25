@@ -51,4 +51,3 @@ it('uses the configured mailable class', function () {
     Mail::assertSent(CustomPlinkMail::class);
     Mail::assertNotSent(PlinkMail::class);
 });
-

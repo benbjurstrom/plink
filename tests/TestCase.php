@@ -2,9 +2,11 @@
 
 namespace BenBjurstrom\Plink\Tests;
 
+use BenBjurstrom\Plink\Http\Controllers\GetPlinkController;
 use BenBjurstrom\Plink\PlinkServiceProvider;
 use BenBjurstrom\Plink\Tests\Support\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -36,5 +38,9 @@ class TestCase extends Orchestra
 
         $migration = include __DIR__.'/../database/migrations/create_plinks_table.php.stub';
         $migration->up();
+
+        Route::get('plink/{id}', GetPlinkController::class)
+            ->name('plink.show')
+            ->middleware('guest');
     }
 }
