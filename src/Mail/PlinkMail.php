@@ -28,7 +28,7 @@ class PlinkMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your '.config('app.name').' Login Link',
+            subject: 'Secure '.config('app.name').' Login Link',
         );
     }
 

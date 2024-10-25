@@ -15,7 +15,8 @@ class GetPlinkController
     {
         try {
             $plink = (new AttemptPlink)->handle($id);
-            Auth::loginUsingId($plink->user_id);
+
+            Auth::loginUsingId($plink->user_id); // fires Illuminate\Auth\Events\Login;
             Session::regenerate();
 
             if (! $plink->user->hasVerifiedEmail()) {

@@ -4,6 +4,8 @@ namespace BenBjurstrom\Plink;
 
 use BenBjurstrom\Plink\Commands\PlinkCommand;
 use BenBjurstrom\Plink\Http\Controllers\GetPlinkController;
+use BenBjurstrom\Plink\Mail\PlinkMail;
+use BenBjurstrom\Plink\Models\Plink as PlinkModel;
 use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -21,9 +23,7 @@ class PlinkServiceProvider extends PackageServiceProvider
             ->name('plink')
             ->hasConfigFile()
             ->hasViews('plink')
-            ->hasMigration('create_plinks_table')
-            ->hasCommand(PlinkCommand::class);
-
+            ->hasMigration('create_plinks_table');
         $this->registerPlinkRouteMacro();
     }
 
@@ -34,12 +34,13 @@ class PlinkServiceProvider extends PackageServiceProvider
                 ->name('plink.show')
                 ->middleware('guest');
 
-            Route::get('/mailable', function () {
-                $plink = \BenBjurstrom\Plink\Models\Plink::find(8);
+            if ($this->app->environment('local')) { // Only for local environment
+                Route::get('/plink', function () {
+                    $plink = PlinkModel::find(1);
 
-                return new \BenBjurstrom\Plink\Mail\PlinkMail($plink);
-            });
-
+                    return new PlinkMail($plink);
+                });
+            }
         });
 
         return $this;
