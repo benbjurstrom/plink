@@ -72,7 +72,7 @@ resources/
     └── vendor/
         └── plink/
             ├── error.blade.php
-            └── mail/
+            ├── components/
                 └── template.blade.php
             └── mail/
                 ├── basic.blade.php
