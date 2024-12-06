@@ -42,8 +42,10 @@ class PlinkMail extends Mailable
             'session' => request()->session()->getId(),
         ]);
 
+        $template = config('plink.template', 'plink::mail.plink');
+
         return new Content(
-            markdown: 'plink::mail.plink',
+            markdown: $template,
             with: [
                 'url' => $url,
             ],

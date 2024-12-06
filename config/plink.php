@@ -27,4 +27,18 @@ return [
     */
 
     'mailable' => BenBjurstrom\Plink\Mail\PlinkMail::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Template Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This setting determines the email template used by Plink to send emails.
+    | Switch to 'plink::mail.basic' if you prefer to use the standard laravel
+    | <x-mail::message> template.
+    |
+    */
+
+    'template' => 'plink::mail.plink',
+    // 'template' => 'plink::mail.basic',
 ];
