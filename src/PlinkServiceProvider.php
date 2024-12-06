@@ -33,7 +33,7 @@ class PlinkServiceProvider extends PackageServiceProvider
                 ->name('plink.show')
                 ->middleware('guest');
 
-            if ($this->app->environment('local')) { // Only for local environment
+            if (app()->environment('local')) { // Only for local environment
                 Route::get('/plink', function () {
                     $plink = PlinkModel::find(1);
 
