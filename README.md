@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://github.com/benbjurstrom/plink/blob/main/art/plink.png?raw=true" width="600" alt="Plink Screenshot">
+    <img src="https://github.com/benbjurstrom/plink/blob/main/art/plink.png?raw=true" alt="Plink Screenshot">
 </div>
 
 # Passwordless Log-In Links for Laravel
