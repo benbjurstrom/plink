@@ -75,7 +75,7 @@ resources/
             ├── components/
                 └── template.blade.php
             └── mail/
-                ├── basic.blade.php
+                ├── notification.blade.php
                 └── plink.blade.php
 ```
 
@@ -124,13 +124,13 @@ return [
     |--------------------------------------------------------------------------
     |
     | This setting determines the email template used by Plink to send emails.
-    | Switch to 'plink::mail.basic' if you prefer to use the standard laravel
-    | <x-mail::message> template.
+    | Switch to 'plink::mail.notification' if you prefer to use the default 
+    | Laravel notification template.
     |
     */
 
     'template' => 'plink::mail.plink',
-    // 'template' => 'plink::mail.basic',
+    // 'template' => 'plink::mail.notification',
 ];
 ```
 
