@@ -72,7 +72,10 @@ resources/
     └── vendor/
         └── plink/
             ├── error.blade.php
+            ├── components/
+                └── template.blade.php
             └── mail/
+                ├── notification.blade.php
                 └── plink.blade.php
 ```
 
@@ -101,6 +104,33 @@ return [
     'models' => [
         'authenticatable' => env('AUTH_MODEL', App\Models\User::class),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mailable Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This setting determines the Mailable class used by Plink to send emails.
+    | Change this to your own Mailable class if you want to customize the email
+    | sending behavior.
+    |
+    */
+
+    'mailable' => BenBjurstrom\Plink\Mail\PlinkMail::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Template Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This setting determines the email template used by Plink to send emails.
+    | Switch to 'plink::mail.notification' if you prefer to use the default 
+    | Laravel notification template.
+    |
+    */
+
+    'template' => 'plink::mail.plink',
+    // 'template' => 'plink::mail.notification',
 ];
 ```
 

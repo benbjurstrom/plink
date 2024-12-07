@@ -372,7 +372,7 @@
                                         <!--[if mso]>
                                               <i class="mso-font-width-[150%]" style="mso-text-raise: 30px;" hidden="">&emsp;</i>
                                         <![endif]-->
-                                        <span style="mso-text-raise: 16px">{{ $buttonText }}</span>
+                                        <span style="mso-text-raise: 16px">{{ $buttontext }}</span>
                                         <!--[if mso]>
                                           <i class="mso-font-width-[150%]" hidden="">&emsp;&#8203;</i>
                                         <![endif]-->
