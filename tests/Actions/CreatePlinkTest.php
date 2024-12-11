@@ -5,6 +5,7 @@ use BenBjurstrom\Plink\Enums\PlinkStatus;
 use BenBjurstrom\Plink\Exceptions\PlinkThrottleException;
 use BenBjurstrom\Plink\Tests\Support\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 
 uses(RefreshDatabase::class);
@@ -106,6 +107,54 @@ it('only counts non-used plinks for throttling', function () {
     $usedPlink->update(['status' => PlinkStatus::USED]);
 
     // Should be able to create new plink immediately
+    $newPlink = (new CreatePlink)->handle($user);
+
+    expect($newPlink)
+        ->status->toBe(PlinkStatus::ACTIVE)
+        ->ip_address->toBe('127.0.0.1');
+});
+
+it('respects custom threshold values from config', function () {
+    $user = User::factory()->create();
+
+    // Override the default thresholds
+    Config::set('plink.limits', [
+        ['limit' => 2, 'minutes' => 2],  // Allow 2 plinks within 2 minutes
+        ['limit' => 4, 'minutes' => 10], // Allow 4 plinks within 10 minutes
+    ]);
+
+    // Should allow 2 plinks within 2 minutes
+    $this->travel(-1)->minutes();
+    $firstPlink = (new CreatePlink)->handle($user);
+    $secondPlink = (new CreatePlink)->handle($user);
+
+    expect($firstPlink->refresh()->status)->toBe(PlinkStatus::SUPERSEDED)
+        ->and($secondPlink->status)->toBe(PlinkStatus::ACTIVE);
+
+    // Third attempt within 2 minutes should throw exception
+    (new CreatePlink)->handle($user);
+})->throws(PlinkThrottleException::class, 'Too many links requested. Please wait 1 minutes and 59 seconds before trying again.');
+
+it('allows plinks after custom threshold period expires', function () {
+    $user = User::factory()->create();
+
+    // Set a single threshold of 2 plinks per 3 minutes
+    Config::set('plink.limits', [
+        ['limit' => 2, 'minutes' => 3],
+    ]);
+
+    // Create 2 plinks
+    $this->travel(-2)->minutes();
+    (new CreatePlink)->handle($user);
+    (new CreatePlink)->handle($user);
+
+    // Attempt third plink within threshold period should fail
+    $this->travel(1)->minutes();
+    expect(fn () => (new CreatePlink)->handle($user))
+        ->toThrow(PlinkThrottleException::class);
+
+    // After threshold period expires, should allow new plink
+    $this->travel(3)->minutes();
     $newPlink = (new CreatePlink)->handle($user);
 
     expect($newPlink)

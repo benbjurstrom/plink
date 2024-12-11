@@ -1,6 +1,26 @@
 <?php
 
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Link Expiration and Throttling
+    |--------------------------------------------------------------------------
+    |
+    | These settings control the security aspects of the generated links,
+    | including their expiration time and the throttling mechanism to prevent
+    | abuse.
+    |
+    */
+
+    'expiration' => 5, // Minutes
+
+    'limits' => [
+        ['limit' => 1, 'minutes' => 1],
+        ['limit' => 3, 'minutes' => 5],
+        ['limit' => 5, 'minutes' => 30],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Model Configuration
@@ -34,11 +54,11 @@ return [
     |--------------------------------------------------------------------------
     |
     | This setting determines the email template used by Plink to send emails.
-    | Switch to 'plink::mail.basic' if you prefer to use the standard laravel
-    | <x-mail::message> template.
+    | Switch to 'plink::mail.notification' if you prefer to use the default
+    | Laravel notification template.
     |
     */
 
     'template' => 'plink::mail.plink',
-    // 'template' => 'plink::mail.basic',
+    // 'template' => 'plink::mail.notification',
 ];

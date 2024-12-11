@@ -6,6 +6,7 @@ use BenBjurstrom\Plink\Exceptions\PlinkAttemptException;
 use BenBjurstrom\Plink\Models\Plink;
 use BenBjurstrom\Plink\Tests\Support\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
@@ -95,4 +96,26 @@ it('allows attempt within 5 minute window', function () {
 
     expect($attemptedPlink->refresh())
         ->status->toBe(PlinkStatus::USED);
+});
+
+it('respects custom expiration time from config for plink database record', function () {
+    Config::set('plink.expiration', 10); // Set 10 minute expiration
+
+    // Create a plink
+    $plink = Plink::factory()->create();
+    Request::merge(['session' => 'test-session-id']);
+
+    // Travel forward 9 minutes - should still work
+    $this->travel(9)->minutes();
+    $attemptedPlink = (new AttemptPlink)->handle($plink->id);
+    expect($attemptedPlink->refresh())
+        ->status->toBe(PlinkStatus::USED);
+
+    // Create another plink
+    $plink = Plink::factory()->create();
+
+    // Travel forward 11 minutes - should fail
+    $this->travel(11)->minutes();
+    expect(fn () => (new AttemptPlink)->handle($plink->id))
+        ->toThrow(PlinkAttemptException::class, PlinkStatus::EXPIRED->errorMessage());
 });
