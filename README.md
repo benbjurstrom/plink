@@ -179,7 +179,7 @@ return [
         RateLimiter::hit($this->throttleKey(), 300);
 
         try {
-            (new SendPlink)->handle($this->email);
+            (new SendPlink)->handle($this->email, $this->remember);
         } catch (PlinkThrottleException $e) {
             throw ValidationException::withMessages([
                 'form.email' => $e->getMessage(),
@@ -188,7 +188,7 @@ return [
 
         RateLimiter::clear($this->throttleKey());
     }
-````
+```
 
 2. Update [resources/views/livewire/pages/auth
    /login.blade.php](https://github.com/laravel/breeze/blob/2.x/stubs/livewire/resources/views/livewire/pages/auth/login.blade.php) such that the login function calls our new sendEmail method and redirects back with a status confirmation. You can also remove the password input field in this same file.
