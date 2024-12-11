@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\URL;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    Route::get('login', fn() => 'login')
+    $this->withoutVite();
+
+    Route::get('login', fn () => 'login')
         ->name('login')
         ->middleware('guest');
 
@@ -79,7 +81,7 @@ it('shows error for invalid signature', function () {
     $url = getSignedUrl($this->plink);
 
     // Tamper with the signature by adding a character
-    $tamperedUrl = $url . 'x';
+    $tamperedUrl = $url.'x';
 
     $response = $this->get($tamperedUrl);
 

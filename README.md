@@ -7,7 +7,6 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/benbjurstrom/plink.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/plink)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/plink/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/benbjurstrom/plink/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/benbjurstrom/plink/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/benbjurstrom/plink/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/benbjurstrom/plink.svg?style=flat-square)](https://packagist.org/packages/benbjurstrom/plink)
 
 This package provides full-featured passwordless log-in links for Laravel applications.
 
@@ -155,8 +154,23 @@ return [
 
 ## Usage
 
-1. Replace the Laravel Breeze [LoginForm authenticate method](https://github.com/laravel/breeze/blob/2.x/stubs/livewire-common/app/Livewire/Forms/LoginForm.php#L29C6-L29C41) with a sendEmail method that runs the SendPlink action. For example:
+### Laravel Breeze Livewire Example
+1. Replace the Laravel Breeze [App\Livewire\Forms\LoginForm::authenticate](https://github.com/laravel/breeze/blob/2.x/stubs/livewire-common/app/Livewire/Forms/LoginForm.php) method with a sendEmail method that runs the SendPlink action. Also be sure to remove password from the LoginForm's properties.
 ```php
+    // app/Livewire/Forms/LoginForm.php
+
+    use BenBjurstrom\Plink\Actions\SendPlink;
+    use BenBjurstrom\Plink\Exceptions\PlinkThrottleException;
+    use BenBjurstrom\Plink\Models\Plink;
+    //...
+
+    #[Validate('required|string|email')]
+    public string $email = '';
+
+    #[Validate('boolean')]
+    public bool $remember = false;
+    //...
+
     public function sendEmail(): void
     {
         $this->validate();
@@ -175,6 +189,20 @@ return [
         RateLimiter::clear($this->throttleKey());
     }
 ````
+
+2. Update [resources/views/livewire/pages/auth
+   /login.blade.php](https://github.com/laravel/breeze/blob/2.x/stubs/livewire/resources/views/livewire/pages/auth/login.blade.php) such that the login function calls our new sendEmail method and redirects back with a status confirmation. You can also remove the password input field in this same file.
+```php
+    public function login(): void
+    {
+        $this->validate();
+
+        $this->form->sendEmail();
+
+        redirect()->back()->with(['status' => 'Login link sent!']);
+    }
+```
+
 
 Everything else is handled by the package components.
 
