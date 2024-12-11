@@ -2,6 +2,15 @@
 
 All notable changes to `plink` will be documented in this file.
 
+## v0.5.0 - 2024-12-11
+
+### What's Changed
+
+* 6 add configurable template by @benbjurstrom in https://github.com/benbjurstrom/plink/pull/11
+* 9 add remember functionality by @benbjurstrom in https://github.com/benbjurstrom/plink/pull/12
+
+**Full Changelog**: https://github.com/benbjurstrom/plink/compare/v0.4.0...v0.5.0
+
 ## v0.4.0 - 2024-12-07
 
 ### What's Changed
