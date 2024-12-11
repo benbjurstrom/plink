@@ -4,7 +4,6 @@ namespace BenBjurstrom\Plink\Actions;
 
 use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 use BenBjurstrom\Plink\Support\Config;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 
 /**
@@ -23,8 +22,6 @@ class GetUserFromEmail
             $user->password = Str::random(32);
             $user->name = '';
             $user->save();
-
-            event(new Registered($user));
         }
 
         return $user;

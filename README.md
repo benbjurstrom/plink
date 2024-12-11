@@ -155,7 +155,7 @@ return [
 ## Usage
 
 ### Laravel Breeze Livewire Example
-1. Replace the Laravel Breeze [App\Livewire\Forms\LoginForm::authenticate](https://github.com/laravel/breeze/blob/2.x/stubs/livewire-common/app/Livewire/Forms/LoginForm.php) method with a sendEmail method that runs the SendPlink action. Also be sure to remove password from the LoginForm's properties.
+1. Replace the Breeze provided [App\Livewire\Forms\LoginForm::authenticate](https://github.com/laravel/breeze/blob/2.x/stubs/livewire-common/app/Livewire/Forms/LoginForm.php) method with a sendEmail method that runs the SendPlink action. Also be sure to remove password from the LoginForm's properties.
 ```php
     // app/Livewire/Forms/LoginForm.php
 
@@ -190,8 +190,7 @@ return [
     }
 ```
 
-2. Update [resources/views/livewire/pages/auth
-   /login.blade.php](https://github.com/laravel/breeze/blob/2.x/stubs/livewire/resources/views/livewire/pages/auth/login.blade.php) such that the login function calls our new sendEmail method and redirects back with a status confirmation. You can also remove the password input field in this same file.
+2. Update [resources/views/livewire/pages/auth/login.blade.php](https://github.com/laravel/breeze/blob/2.x/stubs/livewire/resources/views/livewire/pages/auth/login.blade.php) such that the login function calls our new sendEmail method and redirects back with a status confirmation. You can also remove the password input field in this same file.
 ```php
     public function login(): void
     {
@@ -203,6 +202,56 @@ return [
     }
 ```
 
+### Laravel Breeze Inertia Example
+1. Replace the Breeze provided [App\Http\Requests\Auth\LoginRequest::authenticate](https://github.com/laravel/breeze/blob/e05ae1a21954c8d83bb0fcc78db87f157c16ac6c/stubs/default/app/Http/Requests/Auth/LoginRequest.php) method with a sendEmail method that runs the SendPlink action. Also be sure to remove password from the rules array.
+
+```php
+    // app/Http/Requests/Auth/LoginRequest.php
+
+    use BenBjurstrom\Plink\Actions\SendPlink;
+    use BenBjurstrom\Plink\Exceptions\PlinkThrottleException;
+    use BenBjurstrom\Plink\Models\Plink;
+    //...
+    
+    public function rules(): array
+    {
+        return [
+            'email' => ['required', 'string', 'email']
+        ];
+    }
+    //...
+    
+    public function sendEmail(): Void
+    {
+        $this->ensureIsNotRateLimited();
+        RateLimiter::hit($this->throttleKey(), 300);
+
+        try {
+            (new SendPlink)->handle($this->email, $this->remember);
+        } catch (PlinkThrottleException $e) {
+            throw ValidationException::withMessages([
+                'email' => $e->getMessage(),
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
+    }
+```
+
+2. Update the [App\Http\Controllers\Auth\AuthenticatedSessionController::store](https://github.com/laravel/breeze/blob/e05ae1a21954c8d83bb0fcc78db87f157c16ac6c/stubs/inertia-common/app/Http/Controllers/Auth/AuthenticatedSessionController.php) method to call our new sendEmail method and redirect back with a status confirmation.
+
+```php
+    // app/Http/Controllers/Auth/AuthenticatedSessionController.php
+
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $request->sendEmail();
+
+        return back()->with(['status' => 'Login link sent!']);
+    }
+```
+
+3. Remove the password input field from the [resources/js/Pages/Auth/Login.vue](https://github.com/laravel/breeze/blob/e05ae1a21954c8d83bb0fcc78db87f157c16ac6c/stubs/inertia-vue/resources/js/Pages/Auth/Login.vue) file.
 
 Everything else is handled by the package components.
 
