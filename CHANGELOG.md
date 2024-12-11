@@ -2,6 +2,15 @@
 
 All notable changes to `plink` will be documented in this file.
 
+## v0.4.0 - 2024-12-07
+
+### What's Changed
+
+* 2 switch to mailable by @benbjurstrom in https://github.com/benbjurstrom/plink/pull/5
+* 6 add configurable template by @benbjurstrom in https://github.com/benbjurstrom/plink/pull/7
+
+**Full Changelog**: https://github.com/benbjurstrom/plink/compare/v0.3.0...v0.4.0
+
 ## v0.3.0 - 2024-10-25
 
 ### What's Changed
