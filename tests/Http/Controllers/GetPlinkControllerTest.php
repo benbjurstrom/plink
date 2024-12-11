@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\URL;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
+    Config::set('plink.limits', [
+        ['limit' => 100, 'minutes' => 1],  // Allow 2 plinks within 2 minutes
+    ]);
+
     $this->withoutVite();
 
     Route::get('login', fn () => 'login')

@@ -27,6 +27,7 @@ class Plink extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'remember' => 'boolean',
         'status' => PlinkStatus::class,
         'code' => 'hashed',
     ];
@@ -37,6 +38,7 @@ class Plink extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'remember',
         'code',
         'status',
         'ip_address',

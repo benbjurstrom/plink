@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Mail;
  */
 class SendPlink
 {
-    public function handle(string $email): Plinkable
+    public function handle(string $email, bool $remember = false): Plinkable
     {
         $mailable = config('plink.mailable', PlinkMail::class);
         $user = (new GetUserFromEmail)->handle($email);
-        $plink = (new CreatePlink)->handle($user);
+        $plink = (new CreatePlink)->handle($user, $remember);
 
         Mail::to($user)->send(new $mailable($plink));
 

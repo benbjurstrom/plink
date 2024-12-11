@@ -18,12 +18,19 @@ beforeEach(function () {
 it('creates a new plink for a user', function () {
     $user = User::factory()->create();
 
-    $plink = (new CreatePlink)->handle($user);
+    $plink = (new CreatePlink)->handle($user, true);
 
     expect($plink)
         ->status->toBe(PlinkStatus::ACTIVE)
         ->ip_address->toBe('127.0.0.1')
-        ->user_id->toBe($user->id);
+        ->user_id->toBe($user->id)
+        ->remember->toBeTrue();
+
+    // Verify the value is persisted in the database
+    $this->assertDatabaseHas('plinks', [
+        'id' => $plink->id,
+        'remember' => true,
+    ]);
 });
 
 it('supersedes existing active plinks when creating a new one', function () {

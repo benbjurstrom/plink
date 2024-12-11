@@ -16,11 +16,11 @@ class CreatePlink
     /**
      * @throws PlinkThrottleException
      */
-    public function handle(Plinkable $user): Plink
+    public function handle(Plinkable $user, bool $remember = false): Plink
     {
         $this->throttle($user);
 
-        return $this->createPlink($user);
+        return $this->createPlink($user, $remember);
     }
 
     /**
@@ -75,21 +75,20 @@ class CreatePlink
         return ['minutes' => 0, 'seconds' => 0];
     }
 
-    private function createPlink(Plinkable $user): Plink
+    private function createPlink(Plinkable $user, bool $remember): Plink
     {
-        return DB::transaction(function () use ($user) {
+        return DB::transaction(function () use ($user, $remember) {
             // Invalidate existing active plinks
             $user->plinks()
                 ->where('status', PlinkStatus::ACTIVE)
                 ->update(['status' => PlinkStatus::SUPERSEDED]);
 
             // Create and save the new plink
-            $plink = $user->plinks()->create([
+            return $user->plinks()->create([
                 'status' => PlinkStatus::ACTIVE,
                 'ip_address' => request()->ip(),
+                'remember' => $remember,
             ]);
-
-            return $plink;
         });
     }
 }
