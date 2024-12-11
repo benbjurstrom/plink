@@ -60,5 +60,5 @@ return [
     */
 
     'template' => 'plink::mail.plink',
-    // 'template' => 'plink::mail.notification',
+    // 'template' => 'plink::mail.notification'
 ];
