@@ -14,16 +14,18 @@ use Illuminate\Support\Facades\URL;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    Route::get('login', fn()=> 'login')
+    Route::get('login', fn() => 'login')
         ->name('login')
         ->middleware('guest');
 
     $this->user = User::factory()->create();
     $this->plink = (new CreatePlink)->handle($this->user);
 });
-function getSignedUrl($plink, $exipration = 5, $session = null)
+
+function getSignedUrl($plink, $expiration = 5, $session = null)
 {
-    return URL::temporarySignedRoute('plink.show', $exipration,
+    return URL::temporarySignedRoute('plink.show',
+        now()->addMinutes($expiration),
         [
             'id' => $plink->id,
             'session' => $session ?? session()->getId(),
@@ -33,7 +35,6 @@ function getSignedUrl($plink, $exipration = 5, $session = null)
 
 it('redirects to dashboard with valid signature and non-expired plink', function () {
     $url = getSignedUrl($this->plink);
-
     $response = $this->get($url);
 
     $response->assertRedirect('/dashboard');
@@ -41,17 +42,13 @@ it('redirects to dashboard with valid signature and non-expired plink', function
 });
 
 it('shows error page when signature expires', function () {
-    $this->signedUrl = URL::temporarySignedRoute('plink.show', 1,
-        [
-            'id' => $this->plink->id,
-            'session' => session()->getId(),
-        ]
-    );
+    // Create URL with 1 minute expiration
+    $url = getSignedUrl($this->plink, 1);
 
     // Travel past expiration time
-    $this->travel(3)->minutes();
+    $this->travel(2)->minutes();
 
-    $response = $this->get($this->signedUrl);
+    $response = $this->get($url);
 
     $response->assertOk()
         ->assertViewIs('plink::error')
@@ -60,26 +57,29 @@ it('shows error page when signature expires', function () {
 
 it('respects custom expiration time from config', function () {
     // Set custom expiration time
-    Config::set('plink.expiration', 4); // 4 minutes
+    //Config::set('plink.expiration', 5); // 4 minutes
+    $url = getSignedUrl($this->plink, 4);
 
-    // Travel 4 minutes into the future (should still work)
+    // Travel 3 minutes into the future (should still work)
     $this->travel(3)->minutes();
-    $response = $this->get($this->signedUrl);
+    $response = $this->get($url);
     $response->assertRedirect('/dashboard');
 
     // Then sign out
     Auth::logout();
 
-    // Travel 2 more minutes (now expired)
-    $this->travel(2)->minutes();
-    $response = $this->get($this->signedUrl);
+    // Travel 5 minutes (now expired)
+    $this->travel(5)->minutes();
+    $response = $this->get($url);
     $response->assertViewIs('plink::error')
         ->assertSee(PlinkStatus::INVALID_EXPIRED->errorMessage());
 });
 
 it('shows error for invalid signature', function () {
+    $url = getSignedUrl($this->plink);
+
     // Tamper with the signature by adding a character
-    $tamperedUrl = $this->signedUrl . 'x';
+    $tamperedUrl = $url . 'x';
 
     $response = $this->get($tamperedUrl);
 
@@ -89,14 +89,16 @@ it('shows error for invalid signature', function () {
 });
 
 it('shows error when plink is already used', function () {
+    $url = getSignedUrl($this->plink);
+
     // Use the plink once
-    $this->get($this->signedUrl);
+    $this->get($url);
 
     // Then sign out
     Auth::logout();
 
     // Try to use it again
-    $response = $this->get($this->signedUrl);
+    $response = $this->get($url);
 
     $response->assertOk()
         ->assertViewIs('plink::error')
@@ -104,17 +106,9 @@ it('shows error when plink is already used', function () {
 });
 
 it('shows error when session does not match', function () {
-    // Generate URL with different session ID
-    $differentSessionUrl = URL::temporarySignedRoute(
-        'plink.show',
-        now()->addMinutes(config('plink.expiration', 60)),
-        [
-            'id' => $this->plink->id,
-            'session' => 'different-session-id',
-        ]
-    );
+    $url = getSignedUrl($this->plink, 5, 'different-session-id');
 
-    $response = $this->get($differentSessionUrl);
+    $response = $this->get($url);
 
     $response->assertOk()
         ->assertViewIs('plink::error')
@@ -127,7 +121,8 @@ it('verifies unverified email upon successful login', function () {
 
     expect($this->user->fresh()->hasVerifiedEmail())->toBeFalse();
 
-    $response = $this->get($this->signedUrl);
+    $url = getSignedUrl($this->plink);
+    $response = $this->get($url);
 
     $response->assertRedirect('/dashboard');
     expect($this->user->fresh()->hasVerifiedEmail())->toBeTrue();

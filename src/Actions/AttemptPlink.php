@@ -46,7 +46,9 @@ class AttemptPlink
      */
     protected function validateNotExpired(Plink $plink): void
     {
-        if ($plink->created_at->lt(Carbon::now()->subMinutes(config('plink.expiration')))) {
+        if ($plink->created_at->lt(
+            Carbon::now()->subMinutes(config('plink.expiration')))
+        ) {
             $plink->update(['status' => PlinkStatus::EXPIRED]);
             throw new PlinkAttemptException($plink->status->errorMessage());
         }
@@ -59,7 +61,7 @@ class AttemptPlink
     {
         if (! request()->hasValidSignature()) {
             if (! url()->signatureHasNotExpired(request())) {
-                throw new PlinkAttemptException(PlinkStatus::EXPIRED->errorMessage());
+                throw new PlinkAttemptException(PlinkStatus::INVALID_EXPIRED->errorMessage());
             }
 
             throw new PlinkAttemptException(PlinkStatus::INVALID->errorMessage());
