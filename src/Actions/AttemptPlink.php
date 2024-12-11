@@ -8,6 +8,7 @@ use BenBjurstrom\Plink\Enums\PlinkStatus;
 use BenBjurstrom\Plink\Exceptions\PlinkAttemptException;
 use BenBjurstrom\Plink\Models\Plink;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AttemptPlink
 {
@@ -16,16 +17,18 @@ class AttemptPlink
      */
     public function handle(int $id): Plink
     {
-        $this->validateSignature();
-        $plink = Plink::findOrFail($id);
-        $this->validateStatus($plink);
-        $this->validateNotExpired($plink);
-        $this->validateSession();
+        return DB::transaction(function () use ($id) {
+            $this->validateSignature();
+            $plink = Plink::findOrFail($id);
+            $this->validateStatus($plink);
+            $this->validateNotExpired($plink);
+            $this->validateSession();
 
-        // if everything above passes mark the plink as used
-        $plink->update(['status' => PlinkStatus::USED]);
+            // if everything above passes mark the plink as used
+            $plink->update(['status' => PlinkStatus::USED]);
 
-        return $plink;
+            return $plink;
+        });
     }
 
     /**
@@ -43,7 +46,7 @@ class AttemptPlink
      */
     protected function validateNotExpired(Plink $plink): void
     {
-        if ($plink->created_at->lt(Carbon::now()->subMinutes(5))) {
+        if ($plink->created_at->lt(Carbon::now()->subMinutes(config('plink.expiration')))) {
             $plink->update(['status' => PlinkStatus::EXPIRED]);
             throw new PlinkAttemptException($plink->status->errorMessage());
         }

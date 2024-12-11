@@ -37,7 +37,8 @@ class PlinkMail extends Mailable
      */
     public function content(): Content
     {
-        $url = URL::temporarySignedRoute('plink.show', now()->addMinutes(5), [
+        $expiration = now()->addMinutes(config('plink.expiration', 5));
+        $url = URL::temporarySignedRoute('plink.show', $expiration, [
             'id' => $this->plink->id,
             'session' => request()->session()->getId(),
         ]);

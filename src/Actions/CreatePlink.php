@@ -6,6 +6,7 @@ use BenBjurstrom\Plink\Enums\PlinkStatus;
 use BenBjurstrom\Plink\Exceptions\PlinkThrottleException;
 use BenBjurstrom\Plink\Models\Concerns\Plinkable;
 use BenBjurstrom\Plink\Models\Plink;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @method static Plinkable run(Plinkable $user)
@@ -39,11 +40,11 @@ class CreatePlink
 
     private function getThresholds(): array
     {
-        return [
+        return config('plink.limits', [
             ['limit' => 1, 'minutes' => 1],
             ['limit' => 3, 'minutes' => 5],
             ['limit' => 5, 'minutes' => 30],
-        ];
+        ]);
     }
 
     private function getPlinkCount(Plinkable $user, int $minutes): int
@@ -76,17 +77,19 @@ class CreatePlink
 
     private function createPlink(Plinkable $user): Plink
     {
-        // Invalidate existing active plinks
-        $user->plinks()
-            ->where('status', PlinkStatus::ACTIVE)
-            ->update(['status' => PlinkStatus::SUPERSEDED]);
+        return DB::transaction(function () use ($user) {
+            // Invalidate existing active plinks
+            $user->plinks()
+                ->where('status', PlinkStatus::ACTIVE)
+                ->update(['status' => PlinkStatus::SUPERSEDED]);
 
-        // Create and save the new plink
-        $plink = $user->plinks()->create([
-            'status' => PlinkStatus::ACTIVE,
-            'ip_address' => request()->ip(),
-        ]);
+            // Create and save the new plink
+            $plink = $user->plinks()->create([
+                'status' => PlinkStatus::ACTIVE,
+                'ip_address' => request()->ip(),
+            ]);
 
-        return $plink;
+            return $plink;
+        });
     }
 }

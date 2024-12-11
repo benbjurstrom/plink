@@ -11,7 +11,7 @@ Sign-In to {{ config('app.name') }}
 </x-mail::button>
 
 {{-- Outro Lines --}}
-This link expires after 5 minutes and can only be used once.
+This link expires after {{ config('plink.expiration') }} minutes and can only be used once.
 
 {{-- Salutation --}}
 Thank you for using {{ config('app.name') }}!

@@ -8,7 +8,7 @@ Hello
 </x-slot>
 
 <x-slot:copy>
-Click the button below to securely log in to your account. Note that this link expires after 5 minutes and can only be used once.
+Click the button below to securely log in to your account. Note that this link expires after {{ config('plink.expiration') }} minutes and can only be used once.
 </x-slot>
 
 <x-slot:buttontext>
